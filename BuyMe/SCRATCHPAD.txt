@@ -1,0 +1,47 @@
+DUE SUNDAY APRIL 21st 2019 23:59
+
+
+AUCTION
+
+createAuction.jsp
+-----------------
+	-- choose item category (category)
+	-- posting title (varchar)
+	-- min price (float)
+	-- max price (float)
+	-- bid increment (float)
+	-- start date (datetime)
+	-- end date (datetime)
+	-- posting body (varchar)
+	-- zero or one photo
+	
+	-- ITEM DETAILS
+	-- item name (varchar)
+	-- item quantity (int)
+	-- condition (condition)
+	
+	CONDITIONS:
+	New
+	Excellent
+	Good
+	Okay
+	Poor
+
+	If all fields are valid
+	(date types match input)
+	then create the auction.
+
+for auction.jsp
+---------------
+- retrieve an auction that is queried
+by the client
+
+-- generate a page based on the content
+provided when the auction was created
+
+-- provide the ability to bid
+
+-- start time and end time must agree
+(you can't bid before the start time
+and after the end time)
+
