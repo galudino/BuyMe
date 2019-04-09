@@ -11,7 +11,7 @@ html, body {
    font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;      
-    
+	
 }
 
 div {
@@ -53,11 +53,12 @@ div.content {
 	width: 60%;
     left: 50%;
     transform: translateX(-50%);
+    min-height: 100%;
 }
 
 div.footer {
 	bottom: 0px;
-	position: absolute;
+	position: relative;
 	width: 60%;
 	left: 50%;
 	transform: translateX(-50%);
