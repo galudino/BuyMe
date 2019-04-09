@@ -45,14 +45,18 @@
 
 </div>
 
+<%-- 
 <div class="footer">
 	<hr>
 	
+
 	<div class="container well">
 		<p>Footer things to add later...</p>
 	</div>
+
 	
 </div>
+--%>
 
 <script>
 	var tday=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
@@ -88,6 +92,483 @@
 	setInterval(GetClock,1000);
 </script>
 
+<br>
+<br>
+
+<%-- BEGIN ITEM/AUCTION LISTING --%>
+<h1>CREATE NEW ITEM/AUCTION</h1>
+
+	<%-- BEGIN ITEM LISTING --%>
+	<h2>ITEM INFORMATION</h2>
+	
+	<p>Name<br>
+	<input type="text">
+
+	<p>Description<br>
+	<textarea rows="10" cols="28">(enter description here)</textarea>
+
+	<p>Condition<br>
+	<select>
+		<option>(unspecified)</option>
+		<option>New</option>
+		<option>Like New</option>
+		<option>Excellent</option>
+		<option>Good</option>
+		<option>Poor</option>
+		<option>For Parts Only</option>
+	</select>
+
+	<form action="someplace.php" method="post" enctype="multipart/form-data">
+		<fieldset>
+			<legend>Upload image file</legend>
+			<label for="uploadfile">File name: </label>
+			<input type="file" name="uploadfile" id="uploadfile">
+		</fieldset>
+	</form>
+	<%--END ITEM LISTING --%>
+
+	
+	<%-- BEGIN AUCTION LISTING --%>
+	<h2>AUCTION INFORMATION/SETTINGS</h2>
+	
+	<p>Auction Title<br>
+	<input type="text">
+	
+	<p>Start Date (MM/DD/YYYY)<br>
+	<select>
+		<option>01 (Jan)</option>
+		<option>02 (Feb)</option>
+		<option>03 (Mar)</option>
+		<option>04 (Apr)</option>
+		<option>05 (May)</option>
+		<option>06 (Jun)</option>
+		<option>07 (Jul)</option>
+		<option>08 (Aug)</option>
+		<option>09 (Sep)</option>
+		<option>10 (Oct)</option>
+		<option>11 (Nov)</option>
+		<option>12 (Dec)</option>
+	</select>
+	
+	<select>
+		<option>01</option>
+		<option>02</option>
+		<option>03</option>
+		<option>04</option>
+		<option>05</option>
+		<option>06</option>
+		<option>07</option>
+		<option>08</option>
+		<option>09</option>
+		<option>10</option>
+		<option>11</option>
+		<option>12</option>
+		<option>13</option>
+		<option>14</option>
+		<option>15</option>
+		<option>16</option>
+		<option>17</option>
+		<option>18</option>
+		<option>19</option>
+		<option>20</option>
+		<option>21</option>
+		<option>22</option>
+		<option>23</option>
+		<option>24</option>
+		<option>25</option>
+		<option>26</option>
+		<option>27</option>
+		<option>28</option>
+		<option>29</option>
+		<option>30</option>
+		<option>31</option>
+	</select>
+	
+	<select>
+		<option>2019</option>
+		<option>2020</option>
+		<option>2021</option>
+		<option>2022</option>
+		<option>2023</option>
+		<option>2024</option>
+		<option>2025</option>
+		<option>2026</option>
+		<option>2027</option>
+		<option>2028</option>
+		<option>2029</option>
+	</select>
+	
+	<p>Start Time (hh:mm:ss AM/PM)<br>
+	<select>
+		<option>01</option>
+		<option>02</option>
+		<option>03</option>
+		<option>04</option>
+		<option>05</option>
+		<option>06</option>
+		<option>07</option>
+		<option>08</option>
+		<option>09</option>
+		<option>10</option>
+		<option>11</option>
+		<option>12</option>
+	</select>
+	
+	<select>
+		<option>01</option>
+		<option>02</option>
+		<option>03</option>
+		<option>04</option>
+		<option>05</option>
+		<option>06</option>
+		<option>07</option>
+		<option>08</option>
+		<option>09</option>
+		<option>10</option>
+		<option>11</option>
+		<option>12</option>
+		<option>13</option>
+		<option>14</option>
+		<option>15</option>
+		<option>16</option>
+		<option>17</option>
+		<option>18</option>
+		<option>19</option>
+		<option>20</option>
+		<option>21</option>
+		<option>22</option>
+		<option>23</option>
+		<option>24</option>
+		<option>25</option>
+		<option>26</option>
+		<option>27</option>
+		<option>28</option>
+		<option>29</option>
+		<option>30</option>
+		<option>31</option>
+		<option>32</option>
+		<option>33</option>
+		<option>34</option>
+		<option>35</option>
+		<option>36</option>
+		<option>37</option>
+		<option>38</option>
+		<option>39</option>
+		<option>40</option>
+		<option>41</option>
+		<option>42</option>
+		<option>43</option>
+		<option>44</option>
+		<option>45</option>
+		<option>46</option>
+		<option>47</option>
+		<option>48</option>
+		<option>49</option>
+		<option>50</option>
+		<option>51</option>
+		<option>52</option>
+		<option>53</option>
+		<option>54</option>
+		<option>55</option>
+		<option>56</option>
+		<option>57</option>
+		<option>58</option>
+		<option>59</option>
+	</select>
+	
+	<select>
+		<option>01</option>
+		<option>02</option>
+		<option>03</option>
+		<option>04</option>
+		<option>05</option>
+		<option>06</option>
+		<option>07</option>
+		<option>08</option>
+		<option>09</option>
+		<option>10</option>
+		<option>11</option>
+		<option>12</option>
+		<option>13</option>
+		<option>14</option>
+		<option>15</option>
+		<option>16</option>
+		<option>17</option>
+		<option>18</option>
+		<option>19</option>
+		<option>20</option>
+		<option>21</option>
+		<option>22</option>
+		<option>23</option>
+		<option>24</option>
+		<option>25</option>
+		<option>26</option>
+		<option>27</option>
+		<option>28</option>
+		<option>29</option>
+		<option>30</option>
+		<option>31</option>
+		<option>32</option>
+		<option>33</option>
+		<option>34</option>
+		<option>35</option>
+		<option>36</option>
+		<option>37</option>
+		<option>38</option>
+		<option>39</option>
+		<option>40</option>
+		<option>41</option>
+		<option>42</option>
+		<option>43</option>
+		<option>44</option>
+		<option>45</option>
+		<option>46</option>
+		<option>47</option>
+		<option>48</option>
+		<option>49</option>
+		<option>50</option>
+		<option>51</option>
+		<option>52</option>
+		<option>53</option>
+		<option>54</option>
+		<option>55</option>
+		<option>56</option>
+		<option>57</option>
+		<option>58</option>
+		<option>59</option>
+	</select>
+	
+	<select>
+		<option>A.M</option>
+		<option>P.M</option>
+	</select>
+	
+	<p>End Date (MM/DD/YYYY)<br>
+	<select>
+		<option>01 (Jan)</option>
+		<option>02 (Feb)</option>
+		<option>03 (Mar)</option>
+		<option>04 (Apr)</option>
+		<option>05 (May)</option>
+		<option>06 (Jun)</option>
+		<option>07 (Jul)</option>
+		<option>08 (Aug)</option>
+		<option>09 (Sep)</option>
+		<option>10 (Oct)</option>
+		<option>11 (Nov)</option>
+		<option>12 (Dec)</option>
+	</select>
+	
+	<select>
+		<option>01</option>
+		<option>02</option>
+		<option>03</option>
+		<option>04</option>
+		<option>05</option>
+		<option>06</option>
+		<option>07</option>
+		<option>08</option>
+		<option>09</option>
+		<option>10</option>
+		<option>11</option>
+		<option>12</option>
+		<option>13</option>
+		<option>14</option>
+		<option>15</option>
+		<option>16</option>
+		<option>17</option>
+		<option>18</option>
+		<option>19</option>
+		<option>20</option>
+		<option>21</option>
+		<option>22</option>
+		<option>23</option>
+		<option>24</option>
+		<option>25</option>
+		<option>26</option>
+		<option>27</option>
+		<option>28</option>
+		<option>29</option>
+		<option>30</option>
+		<option>31</option>
+	</select>
+	
+	<select>
+		<option>2019</option>
+		<option>2020</option>
+		<option>2021</option>
+		<option>2022</option>
+		<option>2023</option>
+		<option>2024</option>
+		<option>2025</option>
+		<option>2026</option>
+		<option>2027</option>
+		<option>2028</option>
+		<option>2029</option>
+	</select>
+	
+	<p>End Time (hh:mm:ss AM/PM)<br>
+	<select>
+		<option>01</option>
+		<option>02</option>
+		<option>03</option>
+		<option>04</option>
+		<option>05</option>
+		<option>06</option>
+		<option>07</option>
+		<option>08</option>
+		<option>09</option>
+		<option>10</option>
+		<option>11</option>
+		<option>12</option>
+	</select>
+	
+	<select>
+		<option>01</option>
+		<option>02</option>
+		<option>03</option>
+		<option>04</option>
+		<option>05</option>
+		<option>06</option>
+		<option>07</option>
+		<option>08</option>
+		<option>09</option>
+		<option>10</option>
+		<option>11</option>
+		<option>12</option>
+		<option>13</option>
+		<option>14</option>
+		<option>15</option>
+		<option>16</option>
+		<option>17</option>
+		<option>18</option>
+		<option>19</option>
+		<option>20</option>
+		<option>21</option>
+		<option>22</option>
+		<option>23</option>
+		<option>24</option>
+		<option>25</option>
+		<option>26</option>
+		<option>27</option>
+		<option>28</option>
+		<option>29</option>
+		<option>30</option>
+		<option>31</option>
+		<option>32</option>
+		<option>33</option>
+		<option>34</option>
+		<option>35</option>
+		<option>36</option>
+		<option>37</option>
+		<option>38</option>
+		<option>39</option>
+		<option>40</option>
+		<option>41</option>
+		<option>42</option>
+		<option>43</option>
+		<option>44</option>
+		<option>45</option>
+		<option>46</option>
+		<option>47</option>
+		<option>48</option>
+		<option>49</option>
+		<option>50</option>
+		<option>51</option>
+		<option>52</option>
+		<option>53</option>
+		<option>54</option>
+		<option>55</option>
+		<option>56</option>
+		<option>57</option>
+		<option>58</option>
+		<option>59</option>
+	</select>
+	
+	<select>
+		<option>01</option>
+		<option>02</option>
+		<option>03</option>
+		<option>04</option>
+		<option>05</option>
+		<option>06</option>
+		<option>07</option>
+		<option>08</option>
+		<option>09</option>
+		<option>10</option>
+		<option>11</option>
+		<option>12</option>
+		<option>13</option>
+		<option>14</option>
+		<option>15</option>
+		<option>16</option>
+		<option>17</option>
+		<option>18</option>
+		<option>19</option>
+		<option>20</option>
+		<option>21</option>
+		<option>22</option>
+		<option>23</option>
+		<option>24</option>
+		<option>25</option>
+		<option>26</option>
+		<option>27</option>
+		<option>28</option>
+		<option>29</option>
+		<option>30</option>
+		<option>31</option>
+		<option>32</option>
+		<option>33</option>
+		<option>34</option>
+		<option>35</option>
+		<option>36</option>
+		<option>37</option>
+		<option>38</option>
+		<option>39</option>
+		<option>40</option>
+		<option>41</option>
+		<option>42</option>
+		<option>43</option>
+		<option>44</option>
+		<option>45</option>
+		<option>46</option>
+		<option>47</option>
+		<option>48</option>
+		<option>49</option>
+		<option>50</option>
+		<option>51</option>
+		<option>52</option>
+		<option>53</option>
+		<option>54</option>
+		<option>55</option>
+		<option>56</option>
+		<option>57</option>
+		<option>58</option>
+		<option>59</option>
+	</select>
+	
+	<select>
+		<option>A.M</option>
+		<option>P.M</option>
+	</select>
+	
+	<p>Bid Increment ($x.xx)<br>
+	<input type="text">
+	
+	<p>Minimum Bid Permitted ($x.xx)<br>
+	<input type="text">
+	
+	<p>Starting Price ($x.xx)<br>
+	<input type="text">
+	
+	</p>
+	<%-- END AUCTION LISTING --%>
+	
+<p>
+<button type="button">Submit</button>
+</p>
+
+<%-- END ITEM/AUCTION LISTING --%>
 </body>
 </html>
  
