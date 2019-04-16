@@ -39,6 +39,11 @@
 
 <div class="subheader">
 	<a href="index.jsp"><img src="data\img\project\logo.png"></a>
+		<ul class="content">
+			<li><a class="dt" id="dt"></a></li><br>
+			<li class="content"><a href="AskQuestion.jsp"><button type="button"><b>Ask a Customer Rep!</b></button></a>
+		</ul>
+		
 </div>
 
 <div class="content">
@@ -59,16 +64,10 @@
 </div>
 
 <div class="footer">
-			<ul class="content">
-			<li><a class="dt" id="dt"></a></li><br>
-			<li class="content"><a href="AskQuestion.jsp"><button type="button"><b>Ask a Customer Rep!</b></button></a>
-		</ul>
 	<hr>
-	
 	<div class="container well">
 		<p>Footer things to add later...</p>
 	</div>
-	
 </div>
 
 <script>
