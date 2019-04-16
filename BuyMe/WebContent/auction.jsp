@@ -64,7 +64,6 @@
 		<option>Excellent</option>
 		<option>Good</option>
 		<option>Poor</option>
-		<option>For Parts Only</option>
 	</select>
 	
 	<p>Manufacturer/Brand<br>
