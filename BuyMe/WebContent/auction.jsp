@@ -66,6 +66,48 @@
 		<option>Poor</option>
 		<option>For Parts Only</option>
 	</select>
+	
+	<p>Manufacturer/Brand<br>
+	<input type="text">
+	
+	<p>Size (US Men's)<br>
+	<select>
+		<option>4</option>		
+		<option>4.5</option>
+		<option>5</option>		
+		<option>5.5</option>
+		<option>6</option>		
+		<option>6.5</option>
+		<option>7</option>		
+		<option>7.5</option>
+		<option>8</option>		
+		<option>8.5</option>
+		<option>9</option>		
+		<option>9.5</option>
+		<option>10</option>		
+		<option>10.5</option>
+		<option>11</option>		
+		<option>11.5</option>
+		<option>12</option>		
+		<option>12.5</option>
+		<option>13</option>		
+		<option>13.5</option>
+		<option>14</option>		
+		<option>14.5</option>
+	</select>
+	
+	<p>Color<br>
+	<select>
+		<option>Black</option>
+		<option>Grey</option>
+		<option>Brown</option>
+		<option>Tan</option>
+		<option>Blue</option>
+		<option>Purple</option>
+		<option>Red</option>
+		<option>Pink</option>
+		<option>White</option>
+	</select>
 
 	<form action="someplace.php" method="post" enctype="multipart/form-data">
 		<fieldset>
