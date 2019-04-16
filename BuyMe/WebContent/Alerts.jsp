@@ -38,21 +38,22 @@
 
 <div class="subheader">
 	<a href="index.jsp"><img src="data\img\project\logo.png"></a>
-			<ul class="content">
-			<li><a class="dt" id="dt"></a></li><br>
-			<li class="content"><a href="FAQ.jsp"><button type="button"><b>Have a Question?</b></button></a>
-		</ul>
 </div>
-
+	
 <div class="content">
 	<hr width="100%">
 	<div style="Display :">
 				<p><b>Your Recent Alerts:</b></p>
-				</div>
+	</div>
 </div>
 
 <div class="footer">
 	<hr>
+	
+	<ul class="content">
+		<li><a class="dt" id="dt"></a></li><br>
+		<li class="content"><a href="FAQ.jsp"><button type="button"><b>Have a Question?</b></button></a>
+	</ul>
 	
 	<div class="container well">
 		<p>Footer things to add later...</p>

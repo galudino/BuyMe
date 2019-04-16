@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+    pageEncoding="ISO-8859-1" import="connection.DBConnect"%>
+<%@ page import="java.io.*,java.util.*,java.sql.*"%>
+<%@ page import="java.util.regex.Pattern" %>
+<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>BuyMe - eCommerce</title>
+<title>BuyMe - AskQuestion</title>
 <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
@@ -31,18 +34,20 @@
 
 <div class="content">
 	<hr width="100%">
-		<div style="Display :">
-				<p><b>Ask a Question!</b></p>
-				</div>
+	   <div class="AskQ">
+				<br><h3>Ask a Question!</h3>
+		</div>
 		<div style="Display: ">
 				<form method="post" action="AskQuestion.jsp">
-				<p>Username: <input type="text" placeholder="Enter username" name="reguser" required></p>
-				
-				<p>Question: <input type="Question" placeholder="Enter Question" name="regQuestion" required></p>
+				<p>Question: <input type="text" placeholder="Enter Question" name="regQuestion" required></p>
 				<p></p>
+			    <button type="button"><b>Submit</b></button>
+	<ul class="content">
+		<li><a class="dt" id="dt"></a></li><br>
+	</ul>
 				</form>
+	
 			</div>
-		<button type="button"><b>Submit</b></button>
 	
 </div>
 
@@ -54,54 +59,48 @@
 	</div>
 
 	
-	</div>	
 </div>
 
 
 <% 
-//try {
-//		DBConnect c = new DBConnect();
-//		Connection conn = c.getConnection();
-//		Statement statement = conn.createStatement();
+try {
+		DBConnect c = new DBConnect();
+		Connection conn = c.getConnection();
+		Statement statement = conn.createStatement();
 		
-//		String newUsername = request.getParameter("reguser");
-//		String newQuestion = request.getParameter("regquestion");
+		String newQuestion = request.getParameter("regqQuestion");
 		
-//		System.out.println(newUsername + " " + newQuestion + " ");
+		System.out.println(newQuestion + " ");
 		
-//	if(newUsername.equals(" ") || newQuestion.equals(" ")) {
-//	%>
-		<script>
-//				alert("Sorry. Please fill out all fields!");
-//				window.location.href = "AskQuestion.jsp";
-			</script>
-			<%
-//		}
-
-//	String insert = "INSERT INTO questions(Username, Question)" + "VALUES (?, ?)";
-//		PreparedStatement ps = conn.prepareStatement(insert);
-//		ps.setString(1, newUsername);
-//		ps.setString(2, Question);
-		
-//		ps.executeUpdate();
-		
-//		conn.close();
-		
-//		session.setAttribute("username", newUsername);
-//		session.setAttribute("question", newQuestion);
+	if(newQuestion.equals(" ")) {
 	%>
 		<script>
-//			alert("Your question has been submitted! Your question will be answered by a customer rep in the FAQs page shortly.");
-//			window.location.href ="AskQuestion.jsp";
+				alert("Sorry. Please fill out all fields!");
+				window.location.href = "AskQuestion.jsp";
+			</script>
+			<%
+		}
+
+	String insert = "INSERT INTO questions(question)" + "VALUES (?)";
+		PreparedStatement ps = conn.prepareStatement(insert);
+		ps.setString(1, newQuestion);
+		
+		ps.executeUpdate();
+		
+		conn.close();
+		
+		session.setAttribute("question", newQuestion);
+	%>
+		<script>
+			alert("Your question has been submitted! Your question will be answered by a customer rep in the FAQs page shortly.");
+			window.location.href ="FAQ.jsp";
 		</script>
 		<%
-//	 catch (Exception e) {
-//		System.out.println("ERROR: " + e.getMessage());
-//	}
-	 
-	 %>
-	 
-}
+	 } catch (Exception e) {
+		System.out.println("ERROR: " + e.getMessage());
+	}
+	
+	%>
 
 
 
