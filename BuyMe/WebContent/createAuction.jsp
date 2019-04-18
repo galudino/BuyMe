@@ -144,12 +144,10 @@
 		</div>
 	</div>
 	
-	<br><Br><br><br><br>
+	<br><Br>
 	
 	<p align="center">
-	
-	<button class="btn alt">Submit</button>
-	
+		<button class="btn alt">Create Auction</button>
 	</p>
 
 <div class="footer">
