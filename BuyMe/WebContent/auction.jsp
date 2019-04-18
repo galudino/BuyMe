@@ -124,17 +124,13 @@
 	<p>Start Date<br>
 	<input type="date" name="date">
 	<script>
-		$(function()) {
-			$(".date".datepicker(),
-		});
+
 	</script>
 	
 	<p>End Date<br>
 	<input type="date" name="date">
 	<script>
-		$(function()) {
-			$(".date".datepicker(),
-		});
+
 	</script>
 	
 
@@ -154,9 +150,6 @@
 <button type="button">Submit</button>
 </p>
 
-<%-- END ITEM/AUCTION LISTING --%>
-</div>
-
 <div class="footer">
 	<hr>
 	
@@ -167,6 +160,11 @@
 
 	
 </div>
+
+
+<%-- END ITEM/AUCTION LISTING --%>
+</div>
+
 
 <script>
 	var tday=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];

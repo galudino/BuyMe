@@ -106,7 +106,7 @@
 			%>
 			<script>
 				alert("Sorry. Please fill out all fields!");
-				window.location.href = "signup.jsp";
+				window.location.href = "#";
 			</script>
 			<%
 		}
@@ -117,7 +117,7 @@
 			%>
 			<script>
 				alert("Sorry, e-mail is in incorrect format.");
-				window.location.href = "signup.jsp";
+				window.location.href = "#";
 			</script>
 			<%
 			return;
@@ -130,7 +130,7 @@
 			%>
 			<script>
 				alert("Sorry, but this e-mail is already in use.");
-				window.location.href = "signup.jsp";
+				window.location.href = "#";
 			</script>
 			<%
 			return;
@@ -140,7 +140,7 @@
 			%>
 			<script>
 				alert("Password length requirements not met. Passwords must be 8-16 characters.");
-				window.href.location = "signup.jsp";
+				window.href.location = "#";
 			</script>
 			<%
 			return;
@@ -154,8 +154,19 @@
 		ps.setString(4, newFirst);
 		ps.setString(5, newLast);
 		
-		ps.executeUpdate();
+		int x = ps.executeUpdate();
 		
+		System.out.println(x);
+		
+		if(x == 0) {
+			%>
+			<script>
+				alert("There is an account already with this username.");
+				window.location.href = "#";
+			</script>
+			<%
+			return;
+		}
 		conn.close();
 		
 		session.setAttribute("username", newUsername);
