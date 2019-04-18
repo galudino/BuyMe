@@ -99,7 +99,7 @@
 			</script>
 			<%
 		} else {
-			String example = "SELECT * FROM login l WHERE l.username='" + _user + "' and l.password='" + _pass + "'";
+			String example = "SELECT * FROM USER u WHERE u.username='" + _user + "' and u.password='" + _pass + "'";
 			ResultSet result = statement.executeQuery(example);
 			
 			if(result.next()) {

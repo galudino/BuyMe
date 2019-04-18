@@ -50,11 +50,15 @@
 				
 				<p>Password: <input type="password" placeholder="Enter password" name="regpass" required></p>
 				
-				<p>E-mail: <input type="text" placeholder="Enter e-mail" name="regemail" required></p>
-			
 				<p>First name: <input type="text" placeholder="Enter first name" name="regfirst" required></p>
 			
 				<p>Last name: <input type="text" placeholder="Enter last name" name="reglast" required></p>
+				
+				<p>Address: <input type="text" placeholder="Enter address" name="regaddress" required></p>
+			
+				<p>E-mail: <input type="text" placeholder="Enter e-mail" name="regemail" required></p>
+			
+				<p>Phone: <input type="text" placeholder="Enter phone number" name="regphone" required></p>
 				
 				<p></p>
 				<button class="btn alt">Submit</button>
@@ -96,13 +100,13 @@
 		
 		String newUsername = request.getParameter("reguser");
 		String newPassword = request.getParameter("regpass");
-		String newEmail = request.getParameter("regemail");
 		String newFirst = request.getParameter("regfirst");
 		String newLast = request.getParameter("reglast");
+		String newAddress = request.getParameter("regaddress");
+		String newEmail = request.getParameter("regemail");
+		String newPhone = request.getParameter("regphone");
 		
-		System.out.println(newUsername + " " + newPassword + " " + newEmail + " " + newFirst + " " + newLast);
-		
-		if(newUsername.equals("") || newPassword.equals("") || newEmail.equals("") || newFirst.equals("") || newLast.equals("")) {
+		if(newUsername.equals("") || newPassword.equals("") || newEmail.equals("") || newFirst.equals("") || newLast.equals("") || newAddress.equals("") || newPhone.equals("")) {
 			%>
 			<script>
 				alert("Sorry. Please fill out all fields!");
@@ -123,7 +127,7 @@
 			return;
 		}
 		
-		String checkEmail = "SELECT * FROM login l WHERE l.email='" + newEmail + "'";
+		String checkEmail = "SELECT * FROM USER l WHERE l.email='" + newEmail + "'";
 		ResultSet resultEmail = statement.executeQuery(checkEmail);
 		
 		if(resultEmail.next()) {
@@ -146,13 +150,15 @@
 			return;
 		}
 		
-		String insert = "INSERT INTO login(username, password, email, firstname, lastname)" + "VALUES (?, ?, ?, ?, ?)";
+		String insert = "INSERT INTO USER(username, password, firstname, lastname, address, email, phone)" + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement ps = conn.prepareStatement(insert);
 		ps.setString(1, newUsername);
 		ps.setString(2, newPassword);
-		ps.setString(3, newEmail);
-		ps.setString(4, newFirst);
-		ps.setString(5, newLast);
+		ps.setString(3, newFirst);
+		ps.setString(4, newLast);
+		ps.setString(5, newAddress);
+		ps.setString(6, newEmail);
+		ps.setString(7, newPhone);
 		
 		int x = ps.executeUpdate();
 		
@@ -177,6 +183,7 @@
 			window.location.href ="index.jsp";
 		</script>
 		<%
+		System.out.println(newUsername + " " + newPassword + " " + newFirst + " " + newLast + " " + newAddress + " " + newEmail + " " + newPhone);
 	} catch (Exception e) {
 		System.out.println("ERROR: " + e.getMessage());
 	}

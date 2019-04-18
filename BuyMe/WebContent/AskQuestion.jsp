@@ -49,18 +49,17 @@
 	
 			</div>
 	
-</div>
-
-<div class="footer">
+	<div class="footer">
 	<hr>
 	
 	<div class="container well">
 		<p>Footer things to add later...</p>
 	</div>
-
 	
 </div>
-
+	
+	
+</div>
 
 <% 
 try {
