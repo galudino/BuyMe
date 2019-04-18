@@ -90,7 +90,7 @@ li {
 }
 
 li.links {
-	margin-left: 4.6em;
+	margin-left: 2.5em;
 }
 
 li.datetime {
@@ -394,6 +394,19 @@ input.invalid {
   background-color: #4CAF50;
 }
 
+.borderless {
+	height: 4px;
+}
+
+.tessss {
+	align: center;
+	text-align: left;
+	margin-left: 145px;
+}
+
+.h3move {
+	margin-left: 90px;
+}
 
 
 

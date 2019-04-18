@@ -64,6 +64,7 @@
 		<ul class="Links">
 			<li><a class="dt" id="dt"></a></li><br>
 			<li class="links">Welcome <%=user%>!</li>
+			<li class="links"><a href="createAuction.jsp">Sell</a></li>
 			<li class="links"><a href="tools/logout.jsp">Logout</a></li>
 		</ul>
 	</div>

@@ -23,7 +23,14 @@
 
 <body>
 
-<div class="header-container">
+	<%	String user = (String) session.getAttribute("currentSessionUser");
+	
+	if(user == null)
+		response.sendRedirect("index.jsp"); 
+		
+	%>
+
+    	<div class="header-container">
 	<div class="TopMenu">
 		<ul class="social">
 			<li><a href="https://twitter.com/RutgersU"><img src="data\img\social\twitter.png" height="25px" width="25px"></a></li>
@@ -32,8 +39,10 @@
 		</ul>
 		
 		<ul class="Links">
-			<li><a class="dt" id="dt"></a></li>
-			<li class="links"><a href="login.jsp">Sign in</a> or <a href="signup.jsp">Create an Account</a></li>
+			<li><a class="dt" id="dt"></a></li><br>
+			<li class="links">Welcome <%=user%>!</li>
+			<li class="links"><a href="createAuction.jsp">Sell</a></li>
+			<li class="links"><a href="tools/logout.jsp">Logout</a></li>
 		</ul>
 	</div>
 </div>
