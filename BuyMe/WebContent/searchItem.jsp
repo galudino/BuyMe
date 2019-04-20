@@ -8,11 +8,9 @@
 </head>
 <body>
 <form action="searchItemHandler.jsp">
-Find an item by name<input type="text" name="item_name"/>
-<br/>
-<br/>
-Condition:
-<br/>
+<p> Find an item by name: <input type="text" name="item_name"/></p>
+
+<p> Condition:</p>
 <input type="radio" name="condition" value="excellent">Excellent<br>
 <input type="radio" name="condition" value="good">Good<br>
 <input type="radio" name="condition" value="average">Average<br>
@@ -20,16 +18,15 @@ Condition:
 <br/>
 Price:
 <br/>
-Min: <input type="text" name="min_price"/>
-Max: <input type="text" name="max_price"/>
-<br/>
-<br/>
-Brand: <select name="brand">
-		<option>BrandName1</option>
-		<option>BrandName2</option>
-		<option>BrandName3</option>
-		<option>BrandName4</option>
-</select>
+<p>Min: <input type="text" name="min_price"/>
+Max: <input type="text" name="max_price"/></p>
+<p>
+Brand: 
+<input type="checkbox" name="brand" value="Brand 1">Brand 1
+<input type="checkbox" name="brand" value="Brand 2">Brand 2
+<input type="checkbox" name="brand" value="Brand 3">Brand 3
+<input type="checkbox" name="brand" value="Brand 4">Brand 4
+</p>
 <br/>
 <br/>
 
