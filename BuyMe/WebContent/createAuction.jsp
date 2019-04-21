@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1" import="connection.DBConnect"%>
+<%@ page import="java.io.*,java.util.*,java.sql.*"%>
+<%@ page import="functions.FileUploadDBServlet"%>
+<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
+
 <%--
  * createAuction.jsp
  *
@@ -23,7 +27,7 @@
 
 	<%	String user = (String) session.getAttribute("currentSessionUser");
 		if(user == null)
-			response.sendRedirect("index.jsp"); 	
+			response.sendRedirect("login.jsp"); 	
 	%>
 
     <div class="header-container">
@@ -52,6 +56,8 @@
 
 	<p align="center">Please fill out all the information to create an auction. If information is not filled out, the post will not be successful.</p>
 
+	<form action="uploadServlet" method="post" enctype="multipart/form-data">
+
 	<div class="grid pg_login">
 	
 		<div class="grid_item one-half create_acc">
@@ -60,13 +66,13 @@
 			</div>
 			<div style="Display :" class="tessss">
 				<p><b>Item Name</b>:
-				<input class="borderless" type="text">
+				<input class="borderless" type="text" name="itemName" required>
 
 				<p><b>Description</b>:
-				<textarea rows="1" cols="28"></textarea></p>
+				<textarea rows="15" cols="45" name="description" required></textarea></p>
 
 				<p><b>Condition</b>:                     
-				<select>
+				<select name="conditionType" required>
 							<option>New</option>
 							<option>Like New</option>
 							<option>Excellent</option>
@@ -75,10 +81,10 @@
 				</select></p>
 
 				<p><b>Manufacturer</b>: 
-				<input class="borderless" type="text"></p>
+				<input class="borderless" type="text" name="manufacturer" required></p>
 
 				<p><b>Size</b> (US Men's): 
-				<select>
+				<select name="size" required>
 					<option>4</option>		
 					<option>4.5</option>
 					<option>5</option>		
@@ -104,7 +110,7 @@
 				</select></p>
 
 				<p><b>Color</b>:	
-				<select>
+				<select name="color" required>
 					<option>Black</option>
 					<option>Grey</option>
 					<option>Brown</option>
@@ -116,7 +122,7 @@
 					<option>White</option>
 				</select></p>
 
-						<label for="uploadfile"><b>File name</b>: <label for="upload">Choose a file</label></label>
+						<label for="uploadfile"><b>File name</b>: <input type="file" name="photo" accept="image/*" size="50" required/></label>
 			</div>
 		</div>
 		
@@ -127,29 +133,28 @@
 			<div style="Display :" >
 
 				<p><b>Start Date</b>:
-				<input class="borderless" type="date" name="date"></p>
+				<input class="borderless" type="datetime-local" name="startDate" required></p>
 	
 				<p><b>End Date</b>:
-				<input class="borderless" type="date" name="date"></p>
+				<input class="borderless" type="datetime-local" name="endDate" required></p>
 	
 				<p><b>Bid Increment</b>: 
-				<input class="borderless" type="text"></p>
+				<input class="borderless" type="text" name="bidIncrement" required></p>
 	
 				<p><b>Minimum Bid Permitted</b>: 
-				<input class="borderless" type="text"></p>
+				<input class="borderless" type="text" name="minBid" required></p>
 	
 				<p><b>Starting Price</b>:
-				<input class="borderless" type="text"></p>
+				<input class="borderless" type="text" name="startingPrice" required></p>
+				
+				<p class="h3move"><button class="btn alt" value="Save">Create Auction</button></p>
 			</div>
 		</div>
 	</div>
 	
-	<br><Br>
+	</form>
 	
-	<p align="center">
-		<button class="btn alt">Create Auction</button>
-	</p>
-
+	<br><Br>
 <div class="footer">
 	<hr>
 	
@@ -158,7 +163,8 @@
 		<p>Footer things to add later...</p>
 	</div>
 
-	
+		
+</div>
 </div>
 
 <script>

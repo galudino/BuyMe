@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1" import="connection.DBConnect"%>
+<%@ page import="java.io.*,java.util.*,java.sql.*"%>
+<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
 <%--
  * auction.jsp
  *
@@ -28,6 +30,96 @@
 	if(user == null)
 		response.sendRedirect("index.jsp"); 
 		
+	String auction_id = request.getParameter("auction_id");
+	String item_id = auction_id;
+	String base64Image = null;
+	
+	String auctionInfo[] = null;
+	String itemInfo[] = null;
+	
+	try {
+		
+		DBConnect c = new DBConnect();
+		Connection conn = c.getConnection();
+		Statement statement = conn.createStatement();
+		ResultSet auctionSet = null;
+		ResultSet itemSet = null;
+		
+		auctionSet = statement.executeQuery("SELECT * FROM AUCTION WHERE auction_id = " + auction_id);	
+		
+		ResultSetMetaData auctionMetaData = auctionSet.getMetaData();
+		//ResultSetMetaData itemMetaData = itemSet.getMetaData();
+		
+		auctionInfo= new String[auctionMetaData.getColumnCount()];
+		//itemInfo = new String[itemMetaData.getColumnCount()];
+		
+		System.out.println(auctionMetaData.getColumnCount());
+		
+		if(auctionSet.next()) {
+		
+			for(int i = 1; i < auctionMetaData.getColumnCount(); i++) {
+				auctionInfo[i] = auctionSet.getString(auctionMetaData.getColumnName(i));
+			}
+		}
+		
+        Blob blob = auctionSet.getBlob("photo");
+        
+        System.out.println(blob);
+        
+        InputStream inputStream = blob.getBinaryStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[4096];
+        int bytesRead = -1;
+         
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead);                  
+        }
+         
+        byte[] imageBytes = outputStream.toByteArray();
+        base64Image = Base64.getEncoder().encodeToString(imageBytes);
+        
+        System.out.println(base64Image);
+		
+		//if(itemSet.next()) {
+			
+		//	for(int i = 1; i <= itemMetaData.getColumnCount(); ++i) {
+		//		itemInfo[i] = itemSet.getString(itemMetaData.getColumnName(i));
+		//	}
+		//}
+        conn.close();
+        auctionSet.close();
+      //  itemSet.close();
+	} catch (Exception ex) {
+		ex.printStackTrace();
+	}
+	
+	try {
+		
+		DBConnect c = new DBConnect();
+		Connection conn = c.getConnection();
+		Statement statement = conn.createStatement();
+		ResultSet itemSet = null;
+	
+		itemSet = statement.executeQuery("SELECT * FROM ITEM WHERE item_id = " + auction_id);
+	
+		ResultSetMetaData itemMetaData = itemSet.getMetaData();
+
+		itemInfo = new String[itemMetaData.getColumnCount()];
+	
+		System.out.println(itemMetaData.getColumnCount());
+	
+		if(itemSet.next()) {
+		
+			for(int i = 1; i <= itemMetaData.getColumnCount(); ++i) {
+				itemInfo[i] = itemSet.getString(itemMetaData.getColumnName(i));
+			}
+		}
+    	
+		conn.close();
+    	itemSet.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	%>
 
     	<div class="header-container">
@@ -53,111 +145,22 @@
 
 <div class="content">
 	<hr width="100%">
-	<%-- BEGIN ITEM/AUCTION LISTING --%>
-<h1>CREATE NEW ITEM/AUCTION</h1>
-
-	<%-- BEGIN ITEM LISTING --%>
-	<h2>ITEM INFORMATION</h2>
 	
-	<p>Item/Listing Name<br>
-	<input type="text">
-
-	<p>Description<br>
-	<textarea rows="10" cols="28">(enter description here)</textarea>
-
-	<p>Condition<br>
-	<select>
-		<option>(unspecified)</option>
-		<option>New</option>
-		<option>Like New</option>
-		<option>Excellent</option>
-		<option>Good</option>
-		<option>Poor</option>
-	</select>
+	<table>
+		<tr>
+			<td><img style="border:2px solid #9a9a9a" src="data:image/jpg;base64,<%=base64Image%>" width="400" height="300"/></td>
+			<td><H2 style="padding-left: 20px;" style="vertical-align: top;"><%out.println("      "+ auctionInfo[4] + ""); %></H2>
+			<p style="padding-left: 20px;"><b>Description</b>: <%out.println(itemInfo[3]);%>
+			<br><b>Brand/Manufacturer:</b> <%out.println(itemInfo[5]);%>
+			<br><b>Item Condition</b>: <%out.println(itemInfo[2]);%>
+		</p>
+			</td>
+			
+		</tr>
+	</table>
 	
-	<p>Manufacturer/Brand<br>
-	<input type="text">
-	
-	<p>Size (US Men's)<br>
-	<select>
-		<option>4</option>		
-		<option>4.5</option>
-		<option>5</option>		
-		<option>5.5</option>
-		<option>6</option>		
-		<option>6.5</option>
-		<option>7</option>		
-		<option>7.5</option>
-		<option>8</option>		
-		<option>8.5</option>
-		<option>9</option>		
-		<option>9.5</option>
-		<option>10</option>		
-		<option>10.5</option>
-		<option>11</option>		
-		<option>11.5</option>
-		<option>12</option>		
-		<option>12.5</option>
-		<option>13</option>		
-		<option>13.5</option>
-		<option>14</option>		
-		<option>14.5</option>
-	</select>
-	
-	<p>Color<br>
-	<select>
-		<option>Black</option>
-		<option>Grey</option>
-		<option>Brown</option>
-		<option>Tan</option>
-		<option>Blue</option>
-		<option>Purple</option>
-		<option>Red</option>
-		<option>Pink</option>
-		<option>White</option>
-	</select>
-
-	<form action="someplace.php" method="post" enctype="multipart/form-data">
-		<fieldset>
-			<legend>Upload image file</legend>
-			<label for="uploadfile">File name: </label>
-			<input type="file" name="uploadfile" id="uploadfile">
-		</fieldset>
-	</form>
-	<%--END ITEM LISTING --%>
-
-	
-	<%-- BEGIN AUCTION LISTING --%>
-	<h2>AUCTION INFORMATION/SETTINGS</h2>
-		
-	<p>Start Date<br>
-	<input type="date" name="date">
-	<script>
-
-	</script>
-	
-	<p>End Date<br>
-	<input type="date" name="date">
-	<script>
-
-	</script>
 	
 
-	<p>Bid Increment ($x.xx)<br>
-	<input type="text">
-	
-	<p>Minimum Bid Permitted ($x.xx)<br>
-	<input type="text">
-	
-	<p>Starting Price ($x.xx)<br>
-	<input type="text">
-	
-	</p>
-	<%-- END AUCTION LISTING --%>
-	
-<p>
-<button type="button">Submit</button>
-</p>
 
 <div class="footer">
 	<hr>
@@ -170,8 +173,6 @@
 	
 </div>
 
-
-<%-- END ITEM/AUCTION LISTING --%>
 </div>
 
 
