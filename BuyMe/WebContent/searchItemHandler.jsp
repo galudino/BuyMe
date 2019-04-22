@@ -19,53 +19,103 @@ Connection conn = DriverManager.getConnection(url, "cs336buyme", "Rutgers123");
 PreparedStatement ps = null;
 ResultSet rs = null;
 
-String searchQuery= "SELECT auction.auction_id, item.item_id, item.name, item.brand, item.item_condition, bid.amount"
-                    + " FROM AUCTION auction,"
-                    + " ITEM item,"
-                    + " BID bid"
-                    + " WHERE auction.auction_id = bid.auction_id"
-                    + " And item.item_id = bid.item_id";
+String searchQuery= "SELECT item.item_id, item.name, item.description, item.item_condition, item.brand, item.color, item.size"
+                    + " from ITEM item";
 
 String itemName = request.getParameter("item_name");
 String condition = request.getParameter("condition");
 String min_price = request.getParameter("min_price");
 String max_price = request.getParameter("max_price");
 String[] brands = request.getParameterValues("brand");
+String[] colors = request.getParameterValues("color");
+String[] sizes = request.getParameterValues("size");
 
-if (!itemName.equals("")){
+String temp = "";
+
+if (!itemName.equals("")){	
 	String str = "'" + itemName + "'";
-	searchQuery = searchQuery + " AND item.name = " + str;
+	temp = temp + " where item.name = " + str;
 }
 if (condition != null){
-	String str = "'" + condition + "'";
-	searchQuery = searchQuery + " AND item.item_condition = " + str;
-}
-if (!min_price.equals("")){
-	searchQuery = searchQuery + " AND bid.amount > " + min_price;
-}
-if (!min_price.equals("")){
-	searchQuery = searchQuery + " AND bid.amount <= " + max_price;
+	String str = "";
+	if (!temp.equals("")){
+		str = "'" + condition + "'";
+		temp = temp + " and item.item_condition = " + str;
+	} else {
+		str = "'" + condition + "'";
+		temp = temp + " where item.item_condition = " + str;
+	}
 }
 if (brands != null && brands.length > 0){
-	searchQuery = searchQuery + " And ( ";
+	if (!temp.equals("")){
+		temp = temp + " and ( ";
+	} else {
+		temp = temp + " where ( ";
+	}
 	int counter = 0;
 	for (int i = 0; i < brands.length; i++){
 		if (!brands[i].equals("") && i < brands.length){
 			String str;
 			if (counter == 0){
 				str = " item.brand = '" + brands[i] + "'";
-				searchQuery = searchQuery + str;
+				temp = temp + str;
 			} else {
 				str = " Or" +" item.brand = '" + brands[i] + "'";
-				searchQuery = searchQuery + str;
+				temp = temp + str;
 			}
 			counter++;		
 		}
 	}
-	searchQuery = searchQuery + " )";
+	temp = temp + " )";
+}
+if (colors != null && colors.length > 0){
+	if (!temp.equals("")){
+		temp = temp + " and ( ";
+	} else {
+		temp = temp + " where ( ";
+	}
+	int counter = 0;
+	for (int i = 0; i < colors.length; i++){
+		if (!colors[i].equals("") && i < colors.length){
+			String str;
+			if (counter == 0){
+				str = " item.color = '" + colors[i] + "'";
+				temp = temp + str;
+			} else {
+				str = " Or" +" item.color = '" + colors[i] + "'";
+				temp = temp + str;
+			}
+			counter++;		
+		}
+	}
+	temp = temp + " )";
+}
+if (sizes != null && sizes.length > 0){
+	if (!temp.equals("")){
+		temp = temp + " and ( ";
+	} else {
+		temp = temp + " where ( ";
+	}
+	int counter = 0;
+	for (int i = 0; i < sizes.length; i++){
+		if (!sizes[i].equals("") && i < sizes.length){
+			String str;
+			if (counter == 0){
+				str = " item.size = '" + sizes[i] + "'";
+				temp = temp + str;
+			} else {
+				str = " Or" +" item.size = '" + sizes[i] + "'";
+				temp = temp + str;
+			}
+			counter++;		
+		}
+	}
+	temp = temp + " )";
 }
 
-searchQuery = searchQuery + ";";
+
+
+searchQuery = searchQuery + temp + ";";
 
 out.println(searchQuery);
 
@@ -78,12 +128,13 @@ if (rs.next()){ %>
 <br/>
 	<table>
 		<tr>
-			<th>Auction ID</th>
 			<th>Item ID</th>
 			<th>Item Name</th>
-			<th>Brand</th>
+			<th>Description</th>
 			<th>Condition</th>
-			<th>Price</th>
+			<th>Brand</th>
+			<th>Color</th>
+			<th>Size</th>
 		</tr>
 		<% do {%> 
 		<tr>
@@ -92,7 +143,8 @@ if (rs.next()){ %>
 			<td><%= rs.getString(3)%></td>
 			<td><%= rs.getString(4)%></td>
 			<td><%= rs.getString(5) %></td>
-			<td><%= rs.getInt(6)%></td>
+			<td><%= rs.getString(6)%></td>
+			<td><%= rs.getDouble(7)%></td>
 		</tr>
 		<% } while(rs.next());%>
 	</table>

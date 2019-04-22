@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import = "java.sql.*" %>
+<%@ page import="java.io.*,java.util.*,java.sql.*"%>
+<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,15 +12,15 @@
 <body>
 <%
 Class.forName("com.mysql.jdbc.Driver");
-String url = "jdbc:mysql://cs336buyme.cnnvlun9z7yl.us-east-2.rds.amazonaws.com:3306";
+String url = "jdbc:mysql://cs336buyme.cnnvlun9z7yl.us-east-2.rds.amazonaws.com:3306/buyme";
 
 
 Connection conn = DriverManager.getConnection(url, "cs336buyme", "Rutgers123");
 
-String username = request.getParameter("username");
+String user_id = request.getParameter("username");
 String history = request.getParameter("history");
 
-if (username == null){
+if (user_id == null || user_id.equals("")){
 	out.print("<p>User not found</p>");
 	out.print("<p class=\"message\">Go back to search page? <a href=\"searchHistory.jsp\">Go back</a></p>");
 	
@@ -26,31 +28,30 @@ if (username == null){
 	PreparedStatement ps = null;
 	ResultSet rs = null;
 	
-	if(history == "selling"){
-		ps = conn.prepareStatement("SELECT item_id.has_item, name.has_item, description.has_item, condition.has_item"
-				                   + " FROM HAS_ITEM has_item"
-				                   + " WHERE auction_id.has_item in ("
-				                   + " SELECT auction_id.creates"
-				                   + " FROM CREATES creates"
-				                   + " Where user_id.creates = ?)");
-		ps.setString(1, username);
+	if(history.equals("selling")){
+		ps = conn.prepareStatement("select a.auction_id, a.start_time, a.end_time, a.title, a.starting_price"
+				                  +" from AUCTION a"
+				                  +" where a.user_id = ?");
+		ps.setString(1, user_id);
 		rs = ps.executeQuery();
 		
 		if (rs.next()){
-			out.println("<h2>" + username + "'s Selling History</h2>"); %>
+			out.println("<h2>" + user_id + "'s Selling History</h2>"); %>
 			<table>
 				<tr>
-					<th>Item ID</th>
-					<th>Name</th>
-					<th>Description</th>
-					<th>Condition</th>
+					<th>Auction ID</th>
+					<th>Start Time</th>
+					<th>End Time</th>
+					<th>Title</th>
+					<th>Price</th>
 				</tr>
 			<% do {%> 
 				<tr>
-					<td><%= rs.getString(1)%></td>
-					<td><%= rs.getString(2)%></td>
-					<td><%= rs.getString(3)%></td>
+					<td><%= rs.getInt(1)%></td>
+					<td><%= rs.getTimestamp(2)%></td>
+					<td><%= rs.getTimestamp(3)%></td>
 					<td><%= rs.getString(4)%></td>
+					<td><%= rs.getInt(5)%></td>
 				</tr>
 			<% } while(rs.next());%>
 			</table>	
@@ -69,7 +70,7 @@ if (username == null){
 		rs = ps.executeQuery();
 		
 		if (rs.next()){ 
-			out.println("<h2>" + username + "'s Bidding History</h2>");
+			out.println("<h2>" + user_id + "'s Bidding History</h2>");
 		%>
 		<table>
 			<tr>
@@ -77,7 +78,7 @@ if (username == null){
 				<th>Title</th>
 				<th>Amount</th>
 				<th>Start Time</th>
-				<th>End_time</th>
+				<th>End time</th>
 			</tr>
 		<% do {%> 
 				<tr>
