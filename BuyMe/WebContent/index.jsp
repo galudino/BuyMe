@@ -26,24 +26,6 @@
 	</div>
 </div>
 
-<div class="subheader">
-	<a href="index.jsp"><img src="data\img\project\logo.png"></a>
-</div>
-
-<div class="content">
-	<hr width="100%">
-	<p>Nobody is logged in at the moment!</p>
-	
-	<div class="footer">
-	<hr>
-	
-	<div class="container well">
-		<p>Footer things to add later...</p>
-	</div>
-	
-</div>
-</div>
-
 <% } else {%>
 
 	<%	String user = (String) session.getAttribute("currentSessionUser");
@@ -70,14 +52,14 @@
 	</div>
 </div>
 
+<% } %>
+
 <div class="subheader">
 	<a href="index.jsp"><img src="data\img\project\logo.png"></a>
 </div>
 
 <div class="content">
 	<hr width="100%">
-	<p align="center"><img width="30%" src="http://pngimg.com/uploads/under_construction/under_construction_PNG66.png">
-	<br>Currently BuyMe is under construction. Come back at a later time for more content!
 
 <div class="footer">
 	<hr>
@@ -88,8 +70,6 @@
 	
 </div>
 </div>
-
-<% } %>
 
 <script>
 	var tday=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
