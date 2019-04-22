@@ -8,6 +8,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>User Buying/Selling History</title>
+<link rel="stylesheet" type="text/css" href="css/searchHistoryHandler.css">
 </head>
 <body>
 <%
