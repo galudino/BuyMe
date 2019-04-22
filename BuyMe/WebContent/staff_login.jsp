@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1" import="connection.DBConnect"%>
+<%@ page import="java.io.*,java.util.*,java.sql.*"%>
+<%@ page import="java.util.regex.Pattern" %>
+<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +11,13 @@
 <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
+
+	<%
+		String user = (String) session.getAttribute("currentSessionUser");
+		if (user != null) {
+			session.invalidate();
+		}
+	%>
 
     	<div class="header-container">
 	<div class="TopMenu">
@@ -18,7 +28,7 @@
 		</ul>
 		
 		<ul class="Links">
-			<li><a class="dt" id="dt"></a></li>
+			<li><a class="dt" id="dt"></a></li><br>
 			<li class="links"><a href="login.jsp">Sign in</a> or <a href="signup.jsp">Create an Account</a></li>
 		</ul>
 		</div>
@@ -30,7 +40,68 @@
 
 	<div class="content">
 		<hr width="100%">
-	</div>
+		
+			<br><Br><br><br>
+			
+			<div class="SignIn" style="width: 100%;">
+				<h3 align="center">Administrator & Customer Representative Login</h3>
+			</div>
+			<form method="post" action="staff_login.jsp">
+			<div style="Display: ">
+			<p align="center">Username:</p>
+			<p align="center"><input style="align: center;" type="username" name="username"></input></p>
+			<p align="center">Password:</p>
+			<p align="center"><input type="password" name="password"></input></p>
+			<p></p>
+			<p align="center"><button align="center" class="btn alt">Sign In</button></p>
+			</div>
+			
+			</form>
+		</div>
+		
+		
+			<%
+	
+	try {
+		DBConnect c = new DBConnect();
+		Connection conn = c.getConnection();
+		Statement statement = conn.createStatement();
+		
+		String _user = request.getParameter("username");
+		String _pass = request.getParameter("password");
+		
+		if(_user.equals("") && _pass.equals("")) {
+			%>
+			<script>
+				alert("Please enter your username and password.");
+				window.location.href = "login.jsp";
+			</script>
+			<%
+		} else if(_user.equalsIgnoreCase("admin")) {
+			String adminLogin = "SELECT * FROM ADMIN a WHERE a.username='" + _user + "' and a.password='" + _pass + "'";
+			ResultSet adminResult = statement.executeQuery(adminLogin);
+			
+			if(adminResult.next()) {
+				HttpSession sess = request.getSession(true);
+				sess.setAttribute("currentSessionAdmin", _user);
+				%>
+				<Script>
+					window.location.href = "admin_cp.jsp";
+				</script>
+				<%	
+			}
+		} else {
+			
+			String example = "SELECT * FROM CUSTOMER_REP c WHERE c.username='" + _user + "' and c.password='" + _pass + "'";
+			//ResultSet result = statement.executeQuery(example);
+			System.out.println("ATTEMPTING TO LOGIN w/ customer rep acc");
+			}
+		conn.close();
+	} catch(Exception e) {
+		//System.out.println("ERROR: " + e.getMessage());
+	}
+	
+	%>
 
 	<script>
 		var tday = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",

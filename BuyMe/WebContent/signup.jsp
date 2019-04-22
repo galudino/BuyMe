@@ -41,7 +41,7 @@
 		<div class="grid_item one-half sign1">
 			
 			<div class="CreateAcc">
-				<br><br><br><br><h3>Create an Account</h3>
+				<h3>Create an Account</h3>
 			</div>
 			
 			<div style="Display: ">
@@ -64,7 +64,6 @@
 				<button class="btn alt">Submit</button>
 				</form>
 			</div>
-			
 		</div>
 		
 		<div class="grid_item one-half sign_in">
@@ -74,7 +73,7 @@
 			
 			<div style="Display: ">
 				<br><br><br><br>
-				<img src="data\img\project\auction.jpg" width="80%">
+				<img src="data\img\project\auction.jpg" width="70%">
 			</div>
 		</div>
 		
@@ -214,12 +213,12 @@
 	GetClock();
 	setInterval(GetClock,1000);
 </script>
-
+<br><br><Br>
 </body>
 
 <div class="footer" style="width: 60%;">
-	<hr>
 	
+	<hr>
 	<div class="container well">
 		<table style="width: 100%;">
 			<tr>
