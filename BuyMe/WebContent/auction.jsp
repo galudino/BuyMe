@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" import="connection.DBConnect"%>
-<%@ page import="java.io.*,java.util.*,java.sql.*"%>
+<%@ page import="java.lang.*,java.io.*,java.util.*,java.sql.*"%>
 <%@ page import="javax.servlet.http.*,javax.servlet.*"%>
 <%@ page import="functions.FileUploadDBServlet"%>
 <%@ page import="functions.BidDBServlet"%>
@@ -162,7 +162,7 @@
 		final String fmt = String.format("(Enter at least US $%s plus $%s or more)", auction_minBid,
 				auction_bidIncrement);
 	%>
-
+	
 	<div class="header-container">
 		<div class="TopMenu">
 			<ul class="social">
@@ -259,18 +259,25 @@
 						out.println("$" + auction_minBid + ".00");
 					%>
 					<br> <b>Enter bid $</b> <input class="borderless" type="text"
-						name="userBid" required>.00 <br>
+						name="bid" required>.00 <br>
 					<%
 						out.println(fmt);
 					%>
 				</p>
-
+				
+				<input type="text" name="auction_id" value=<%=auction_id%>>
+				<input type="text" name="item_id" value=<%=item_id%>>
+				<input type="text" name="auction_minBid" value=<%=auction_minBid%>>
+				<input type="text" name="auction_startingPrice" value=<%=auction_startingPrice%>>
+				<input type="text" name="auction_bidIncrement" value=<%=auction_bidIncrement%>>
+				
 				<p class="h3move">
 					<button class="btn alt" value="Save">BID NOW</button>
 				</p>
-
+								
 			</div>
 		</form>
+			
 	</div>
 
 
