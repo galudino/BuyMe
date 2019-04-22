@@ -2,6 +2,7 @@
 	pageEncoding="ISO-8859-1" import="connection.DBConnect"%>
 <%@ page import="java.io.*,java.util.*,java.sql.*"%>
 <%@ page import="javax.servlet.http.*,javax.servlet.*"%>
+<%@ page import="functions.FileUploadDBServlet"%>
 <%@ page import="functions.BidDBServlet"%>
 
 <%--
@@ -130,12 +131,9 @@
 		final String auction_startDate = auctionInfo[1];
 		final String auction_endDate = auctionInfo[2];
 		final String auction_itemName = auctionInfo[3];
-		final int auction_minBid = Integer.parseInt(auctionInfo[4]);
-		final int auction_startingPrice = Integer.parseInt(auctionInfo[5]);
-		final int auction_bidIncrement = Integer.parseInt(auctionInfo[6]);
-
-		final int minimumBidAccepted = auction_minBid + auction_bidIncrement;
-		final String fmt = String.format("(Enter US $%d.00 or more)", minimumBidAccepted);
+		final String auction_minBid = auctionInfo[4];
+		final String auction_startingPrice = auctionInfo[5];
+		final String auction_bidIncrement = auctionInfo[6];
 
 		final String item_conditionType = itemInfo[1];
 		final String item_description = itemInfo[2];
@@ -143,6 +141,26 @@
 		final String item_manufacturer = itemInfo[4];
 		final String item_size = itemInfo[5];
 		final String item_color = itemInfo[6];
+
+		/**
+		 * auction_minBid and auction_startingPrice are mutable values,
+		 * while auction_bidIncrement is a fixed value.
+		 *
+		 * All auctions have a base auction_startingPrice value,
+		 * which increases each time a bid is made.
+		 *
+		 * auction_minBid = auction_startingPrice + auction_bidIncrement.
+		 *
+		 * For a bid to be valid, the user's bid must be
+		 * greater than or equal to the auction_minBid value.
+		 *
+		 * The value of the most recent bid becomes the value
+		 * of auction_startingPrice.
+		 */
+		//final int minimumBidAccepted = auction_minBid + auction_bidIncrement;
+		//final String fmt = String.format("(Enter US $%d.00 or more)", minimumBidAccepted);
+		final String fmt = String.format("(Enter at least US $%s plus $%s or more)", auction_minBid,
+				auction_bidIncrement);
 	%>
 
 	<div class="header-container">
@@ -233,81 +251,80 @@
 			</tr>
 		</table>
 
-		<div style="Display:">
-			<p>
-			<b>Starting bid:</b>
-			<%
-				out.println("$" + auction_minBid + ".00");
-			%>
-			<br>
-			<b>Enter bid $</b>
-			<input class="borderless" type="text" name="userBid" required>.00
-			<br>
-			<%
-				out.println(String.format("(enter US $%d.00 or more)", 
-						minimumBidAccepted));
-			%>
-			</p>
-	
+		<form action="bidServlet" method="post" enctype="multipart/form-data">
+			<div style="Display:">
+				<p>
+					<b>Starting bid:</b>
+					<%
+						out.println("$" + auction_minBid + ".00");
+					%>
+					<br> <b>Enter bid $</b> <input class="borderless" type="text"
+						name="userBid" required>.00 <br>
+					<%
+						out.println(fmt);
+					%>
+				</p>
 
-			<p class="h3move">
-				<button class="btn alt" value="Save">BID NOW</button>
-			</p>
+				<p class="h3move">
+					<button class="btn alt" value="Save">BID NOW</button>
+				</p>
 
-		</div>
-
-
-		<div class="footer">
-			<hr>
-
-
-			<div class="container well">
-				<p>Footer things to add later...</p>
 			</div>
-			
+		</form>
+	</div>
+
+
+	<div class="footer">
+		<hr>
+
+
+		<div class="container well">
+			<p>Footer things to add later...</p>
 		</div>
 
+	</div>
 
-		<script>
-			var tday = [ "Sunday", "Monday", "Tuesday", "Wednesday",
-					"Thursday", "Friday", "Saturday" ];
-			var tmonth = [ "January", "February", "March", "April", "May",
-					"June", "July", "August", "September", "October",
-					"November", "December" ];
 
-			function GetClock() {
-				var d = new Date();
-				var nday = d.getDay(), nmonth = d.getMonth(), ndate = d
-						.getDate(), nyear = d.getFullYear();
-				var nhour = d.getHours(), nmin = d.getMinutes(), nsec = d
-						.getSeconds(), ap;
+	<script>
+		var tday = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
+				"Friday", "Saturday" ];
+		var tmonth = [ "January", "February", "March", "April", "May", "June",
+				"July", "August", "September", "October", "November",
+				"December" ];
 
-				if (nhour == 0) {
-					ap = " AM";
-					nhour = 12;
-				} else if (nhour < 12) {
-					ap = " AM";
-				} else if (nhour == 12) {
-					ap = " PM";
-				} else if (nhour > 12) {
-					ap = " PM";
-					nhour -= 12;
-				}
+		function GetClock() {
+			var d = new Date();
+			var nday = d.getDay(), nmonth = d.getMonth(), ndate = d.getDate(), nyear = d
+					.getFullYear();
+			var nhour = d.getHours(), nmin = d.getMinutes(), nsec = d
+					.getSeconds(), ap;
 
-				if (nmin <= 9)
-					nmin = "0" + nmin;
-				if (nsec <= 9)
-					nsec = "0" + nsec;
-
-				var clocktext = "" + tday[nday] + ", " + tmonth[nmonth] + " "
-						+ ndate + ", " + nyear + " " + nhour + ":" + nmin + ":"
-						+ nsec + ap + "";
-				document.getElementById('dt').innerHTML = clocktext;
+			if (nhour == 0) {
+				ap = " AM";
+				nhour = 12;
+			} else if (nhour < 12) {
+				ap = " AM";
+			} else if (nhour == 12) {
+				ap = " PM";
+			} else if (nhour > 12) {
+				ap = " PM";
+				nhour -= 12;
 			}
 
-			GetClock();
-			setInterval(GetClock, 1000);
-		</script>
+			if (nmin <= 9)
+				nmin = "0" + nmin;
+			if (nsec <= 9)
+				nsec = "0" + nsec;
+
+			var clocktext = "" + tday[nday] + ", " + tmonth[nmonth] + " "
+					+ ndate + ", " + nyear + " " + nhour + ":" + nmin + ":"
+					+ nsec + ap + "";
+			document.getElementById('dt').innerHTML = clocktext;
+		}
+
+		GetClock();
+		setInterval(GetClock, 1000);
+	</script>
 </body>
 </html>
 
