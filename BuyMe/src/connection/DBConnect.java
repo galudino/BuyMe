@@ -36,9 +36,7 @@ public class DBConnect {
 		try {
 			conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
 			
-			if(conn != null) 
-				System.out.println("Connected to Database successfully...");
-			else 
+			if(conn == null) 
 				System.out.println("ERR: Cannot connect to Database. Check user/pass.");
 		} catch(Exception e) {
 			System.out.println("ERR: " + e.getMessage());

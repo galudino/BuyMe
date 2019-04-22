@@ -2,13 +2,21 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 @import url('https://fonts.googleapis.com/css?family=Work+Sans:300,600');
 
+code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}
+
+a:active,a:hover{outline-width:0}
+a, a:visited {
+    color: inherit;
+}
 
 html, body {
 	margin: 0;
 	padding: 0;
 	border: 0;
     font-weight: normal;
-   font-family: "Roboto", sans-serif;
+   font-family:Verdana,sans-serif;
+   font-size:15px;
+   line-height:1.5
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;      
 	

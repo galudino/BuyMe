@@ -63,13 +63,6 @@
 
 </div>
 
-<div class="footer">
-	<hr>
-	<div class="container well">
-		<p>Footer things to add later...</p>
-	</div>
-</div>
-
 <script>
 	var tday=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 	var tmonth=["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -106,5 +99,24 @@
 
 </body>
 
+<div class="footer" style="width: 60%;">
+	<hr>
+	
+	<div class="container well">
+		<table style="width: 100%;">
+			<tr>
+				<th style="width: 33%"><u>ABOUT BuyMe</u></th>
+				<th style="width: 33%"><u>LINKS</u></th>
+				<th style="width: 33%"><u>CONTACT</u></th>
+			</tr>
+			<tr>
+				<td style="width: 33%; align: center; text-align: center;">BuyMe is an online auction website that allows users to experience an auction website like no other. An easy user experience to ensure 100% satisfaction between customers. Active customer staff to assist with any issues that may arise.</td>
+				<td style="width: 33%; align: center; text-align: center;"><a href="staff_login.jsp">Staff Login</a><br>Meet the Team<br><a href="FAQ.jsp">F.A.Q</a><br><a href="https://twitter.com/RutgersU">Twitter</a> | <a href="https://www.facebook.com/RutgersU">Facebook</a>  | <a href="https://www.instagram.com/RutgersU">Instagram</a> </td>
+				<td style="width: 33%; align: center; text-align: center;"><b>BuyMe LLC</b><br>Rutgers University<br>New Brunswick, NJ<br>P: (123) 456-7890</td>
+			</tr>
+		</table>
+	</div>
+	
+</div>
 
 </html>

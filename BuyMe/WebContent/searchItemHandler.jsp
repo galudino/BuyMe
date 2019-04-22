@@ -8,6 +8,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Search Item Results</title>
+<link rel="stylesheet" type="text/css" href="css/searchItemHandler.css">
 </head>
 <body>
 <% Class.forName("com.mysql.jdbc.Driver");

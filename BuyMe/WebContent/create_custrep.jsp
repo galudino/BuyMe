@@ -7,113 +7,133 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>BuyMe - Login</title>
-<link rel="stylesheet" type="text/css" href="css/style.css">
+<title>BuyMe - AdminCP: Create Customer Rep</title>
+<link rel="stylesheet" type="text/css" href="css/style.css">              
 </head>
 
 <body>
 
-<div class="header-container">
-	<div class="TopMenu">
-		<ul class="social">
-			<li><a href="https://twitter.com/RutgersU"><img src="data\img\social\twitter.png" height="25px" width="25px"></a></li>
-			<li><a href="https://www.facebook.com/RutgersU"><img src="data\img\social\facebook.png" height="25px" width="25px"></a></li>
-			<li><a href="https://www.instagram.com/RutgersU"><img src="data\img\social\instagram.png" height="25px" width="25px"></a></li>
-		</ul>
-		
-		<ul class="Links">
-			<li><a class="dt" id="dt"></a></li><br>
-			<li class="links"><a href="login.jsp">Sign in</a> or <a href="signup.jsp">Create an Account</a></li>
-		</ul>
+	<%
+		String user = (String) session.getAttribute("currentSessionAdmin");
+
+		if (user == null)
+			response.sendRedirect("index.jsp");
+			
+	%>
+
+	<div class="header-container">
+		<div class="TopMenu">
+			<ul class="social">
+				<li><a href="https://twitter.com/RutgersU"><img
+						src="data\img\social\twitter.png" height="25px" width="25px"></a></li>
+				<li><a href="https://www.facebook.com/RutgersU"><img
+						src="data\img\social\facebook.png" height="25px" width="25px"></a></li>
+				<li><a href="https://www.instagram.com/RutgersU"><img
+						src="data\img\social\instagram.png" height="25px" width="25px"></a></li>
+			</ul>
+
+			<ul class="Links">
+				<li><a class="dt" id="dt"></a></li><br>
+				<li class="links">Welcome <%=user%>!</li>
+				<li class="links"><a href="generate_report.jsp"">Generate</a></li>
+				<li class="links"><a href="create_custrep.jsp">Create Cust. Rep</a></li>
+				<li class="links"><a href="tools/logout.jsp">Logout</a></li>
+			</ul>
+		</div>
 	</div>
-</div>
 
 <div class="subheader">
-	<a href="index.jsp"><img src="data\img\project\logo.png"></a>
+	<a href="admin_cp.jsp"><img src="data\img\project\logo.png"></a>
 </div>
 
 <div class="content">
 	<hr width="100%">
 	
-	<div class="grid pg_login">
+		<div align="center" class="grid pg_login">
 	
-		<div class="grid_item one-half create_acc">
+		<div class="grid_item one-half sign1">
+			
 			<div class="CreateAcc">
 				<h3>Create an Account</h3>
 			</div>
-			<div style="Display :">
-				<p>Create an account and you'll be able to:</p>
-				<ul>
-					<li>- Receive alerts on auctions</li><br>
-					<li>- Interact with other users</li><br>
-					<li>- Access your order history</li><br>
-					<li>- Rate transactions</li><br>
-					<li>- Utilize the helpdesk</li><br>
-				</ul>
-				
-				<a href="signup.jsp" class="btn alt">Click here to create a new account.</a>
-			</div>
 			
+			<div style="Display: ">
+				<form method="post" action="create_custrep.jsp">
+				<p>Username: <input type="text" placeholder="Enter username" name="custrepuser" required></p>
+				
+				<p>Password: <input type="password" placeholder="Enter password" name="custreppass" required></p>
+							
+				<button class="btn alt">Create</button>
+				</form>
+			</div>
 		</div>
 		
 		<div class="grid_item one-half sign_in">
 			<div class="SignIn">
-				<h3>Sign In</h3>
+				<h3>Customer Representative Table</h3>
 			</div>
-			<form method="post" action="login.jsp">
+			
 			<div style="Display: ">
-			<p>Username:</p>
-			<input type="username" name="username"></input>
-			<p>Password:</p>
-			<input type="password" name="password"></input>
-			<p></p>
-			<button class="btn alt">Sign In</button>
+				
 			</div>
-			</form>
 		</div>
+		
 	</div>
-	<%
+	
+		<% 
 	
 	try {
 		DBConnect c = new DBConnect();
 		Connection conn = c.getConnection();
 		Statement statement = conn.createStatement();
 		
-		String _user = request.getParameter("username");
-		String _pass = request.getParameter("password");
-		
-		if(_user.equals("") && _pass.equals("")) {
+		String newUsername = request.getParameter("custrepuser");
+		String newPassword = request.getParameter("custreppass");
+			
+		if(newUsername.equalsIgnoreCase("admin")) {
 			%>
 			<script>
-				alert("Please enter your username and password.");
-				window.location.href = "login.jsp";
+				alert("You are not allowed to have this username. Reserved for Administrators!");
 			</script>
 			<%
-		} else {
-			String example = "SELECT * FROM USER u WHERE u.username='" + _user + "' and u.password='" + _pass + "'";
-			ResultSet result = statement.executeQuery(example);
-			
-			if(result.next()) {
-				HttpSession sess = request.getSession(true);
-				sess.setAttribute("currentSessionUser", _user);
-				%>
-				<script>
-					window.location.href = "index.jsp";
-				</script>
-				<%
-			} else {
-				System.out.println("NO USER FOUND.");
-				%>
-				<script>
-					alert("User not found or password entered incorrectly.");
-					window.location.href = "login.jsp";
-				</script>
-				<%
-			}
+			return;
+		}
+		
+		if(newPassword.length() <= 8 || newPassword.length() >= 16) {
+			%>
+			<script>
+				alert("Password length requirements not met. Passwords must be 8-16 characters.");
+				window.href.location = "#";
+			</script>
+			<%
+			return;
+		}
+		
+		String insert = "INSERT INTO CUSTOMER_REP(username, password)" + "VALUES (?, ?)";
+		PreparedStatement ps = conn.prepareStatement(insert);
+		ps.setString(1, newUsername);
+		ps.setString(2, newPassword);
 
+		int x = ps.executeUpdate();
+		
+		if(x == 0) {
+			%>
+			<script>
+				alert("There is an account already with this username.");
+				window.location.href = "#";
+			</script>
+			<%
+			return;
 		}
 		conn.close();
-	} catch(Exception e) {
+		%>
+		<script>
+			alert("Congratulations, new customer representative account is created!");
+			window.location.href ="admin_cp.jsp";
+		</script>
+		<%
+		//System.out.println(newUsername + " " + newPassword);
+	} catch (Exception e) {
 		//System.out.println("ERROR: " + e.getMessage());
 	}
 	
@@ -154,6 +174,8 @@
 	GetClock();
 	setInterval(GetClock,1000);
 </script>
+
+
 
 </body>
 

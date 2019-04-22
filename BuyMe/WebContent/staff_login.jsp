@@ -7,13 +7,19 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>BuyMe - Login</title>
+<title>BuyMe - Staff Login</title>
 <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
-
 <body>
 
-<div class="header-container">
+	<%
+		String user = (String) session.getAttribute("currentSessionUser");
+		if (user != null) {
+			session.invalidate();
+		}
+	%>
+
+    	<div class="header-container">
 	<div class="TopMenu">
 		<ul class="social">
 			<li><a href="https://twitter.com/RutgersU"><img src="data\img\social\twitter.png" height="25px" width="25px"></a></li>
@@ -25,54 +31,36 @@
 			<li><a class="dt" id="dt"></a></li><br>
 			<li class="links"><a href="login.jsp">Sign in</a> or <a href="signup.jsp">Create an Account</a></li>
 		</ul>
+		</div>
 	</div>
-</div>
 
-<div class="subheader">
-	<a href="index.jsp"><img src="data\img\project\logo.png"></a>
-</div>
+	<div class="subheader">
+		<a href="index.jsp"><img src="data\img\project\logo.png"></a>
+	</div>
 
-<div class="content">
-	<hr width="100%">
-	
-	<div class="grid pg_login">
-	
-		<div class="grid_item one-half create_acc">
-			<div class="CreateAcc">
-				<h3>Create an Account</h3>
+	<div class="content">
+		<hr width="100%">
+		
+			<br><Br><br><br>
+			
+			<div class="SignIn" style="width: 100%;">
+				<h3 align="center">Administrator & Customer Representative Login</h3>
 			</div>
-			<div style="Display :">
-				<p>Create an account and you'll be able to:</p>
-				<ul>
-					<li>- Receive alerts on auctions</li><br>
-					<li>- Interact with other users</li><br>
-					<li>- Access your order history</li><br>
-					<li>- Rate transactions</li><br>
-					<li>- Utilize the helpdesk</li><br>
-				</ul>
-				
-				<a href="signup.jsp" class="btn alt">Click here to create a new account.</a>
+			<form method="post" action="staff_login.jsp">
+			<div style="Display: ">
+			<p align="center">Username:</p>
+			<p align="center"><input style="align: center;" type="username" name="username"></input></p>
+			<p align="center">Password:</p>
+			<p align="center"><input type="password" name="password"></input></p>
+			<p></p>
+			<p align="center"><button align="center" class="btn alt">Sign In</button></p>
 			</div>
 			
-		</div>
-		
-		<div class="grid_item one-half sign_in">
-			<div class="SignIn">
-				<h3>Sign In</h3>
-			</div>
-			<form method="post" action="login.jsp">
-			<div style="Display: ">
-			<p>Username:</p>
-			<input type="username" name="username"></input>
-			<p>Password:</p>
-			<input type="password" name="password"></input>
-			<p></p>
-			<button class="btn alt">Sign In</button>
-			</div>
 			</form>
 		</div>
-	</div>
-	<%
+		
+		
+			<%
 	
 	try {
 		DBConnect c = new DBConnect();
@@ -89,71 +77,72 @@
 				window.location.href = "login.jsp";
 			</script>
 			<%
-		} else {
-			String example = "SELECT * FROM USER u WHERE u.username='" + _user + "' and u.password='" + _pass + "'";
-			ResultSet result = statement.executeQuery(example);
+		} else if(_user.equalsIgnoreCase("admin")) {
+			String adminLogin = "SELECT * FROM ADMIN a WHERE a.username='" + _user + "' and a.password='" + _pass + "'";
+			ResultSet adminResult = statement.executeQuery(adminLogin);
 			
-			if(result.next()) {
+			if(adminResult.next()) {
 				HttpSession sess = request.getSession(true);
-				sess.setAttribute("currentSessionUser", _user);
+				sess.setAttribute("currentSessionAdmin", _user);
 				%>
-				<script>
-					window.location.href = "index.jsp";
+				<Script>
+					window.location.href = "admin_cp.jsp";
 				</script>
-				<%
-			} else {
-				System.out.println("NO USER FOUND.");
-				%>
-				<script>
-					alert("User not found or password entered incorrectly.");
-					window.location.href = "login.jsp";
-				</script>
-				<%
+				<%	
 			}
-
-		}
+		} else {
+			
+			String example = "SELECT * FROM CUSTOMER_REP c WHERE c.username='" + _user + "' and c.password='" + _pass + "'";
+			//ResultSet result = statement.executeQuery(example);
+			System.out.println("ATTEMPTING TO LOGIN w/ customer rep acc");
+			}
 		conn.close();
 	} catch(Exception e) {
 		//System.out.println("ERROR: " + e.getMessage());
 	}
 	
 	%>
-	
-</div>
 
-<script>
-	var tday=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-	var tmonth=["January","February","March","April","May","June","July","August","September","October","November","December"];
+	<script>
+		var tday = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
+				"Friday", "Saturday" ];
+		var tmonth = [ "January", "February", "March", "April", "May", "June",
+				"July", "August", "September", "October", "November",
+				"December" ];
 
-	function GetClock(){
-		var d=new Date();
-		var nday=d.getDay(),nmonth=d.getMonth(),ndate=d.getDate(),nyear=d.getFullYear();
-		var nhour=d.getHours(),nmin=d.getMinutes(),nsec=d.getSeconds(),ap;
+		function GetClock() {
+			var d = new Date();
+			var nday = d.getDay(), nmonth = d.getMonth(), ndate = d.getDate(), nyear = d
+					.getFullYear();
+			var nhour = d.getHours(), nmin = d.getMinutes(), nsec = d
+					.getSeconds(), ap;
 
-		if(nhour == 0) {	
-			ap=" AM";
-			nhour = 12;
-		} else if(nhour < 12) {
-			ap=" AM";
-		} else if(nhour == 12){
-			ap=" PM";
-		} else if(nhour > 12){
-			ap=" PM";
-			nhour -= 12;
+			if (nhour == 0) {
+				ap = " AM";
+				nhour = 12;
+			} else if (nhour < 12) {
+				ap = " AM";
+			} else if (nhour == 12) {
+				ap = " PM";
+			} else if (nhour > 12) {
+				ap = " PM";
+				nhour -= 12;
+			}
+
+			if (nmin <= 9)
+				nmin = "0" + nmin;
+			if (nsec <= 9)
+				nsec = "0" + nsec;
+
+			var clocktext = "" + tday[nday] + ", " + tmonth[nmonth] + " "
+					+ ndate + ", " + nyear + " " + nhour + ":" + nmin + ":"
+					+ nsec + ap + "";
+			document.getElementById('dt').innerHTML = clocktext;
 		}
 
-		if(nmin<=9) 
-			nmin="0"+nmin;
-		if(nsec<=9) 
-			nsec="0"+nsec;
-
-		var clocktext=""+tday[nday]+", "+tmonth[nmonth]+" "+ndate+", "+nyear+" "+nhour+":"+nmin+":"+nsec+ap+"";
-		document.getElementById('dt').innerHTML=clocktext;
-	}
-
-	GetClock();
-	setInterval(GetClock,1000);
-</script>
+		GetClock();
+		setInterval(GetClock, 1000);
+	</script>
 
 </body>
 

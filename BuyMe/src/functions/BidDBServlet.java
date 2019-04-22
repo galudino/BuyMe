@@ -102,7 +102,6 @@ public final class BidDBServlet extends HttpServlet {
 						winStatusStr);
 				
 				PreparedStatement insertStatement = conn.prepareStatement(insertStr);
-				
 				insertStatement.executeUpdate();
 				
 				/**
@@ -123,6 +122,14 @@ public final class BidDBServlet extends HttpServlet {
 				 * 	photo
 				 * 	user_id
 				 */
+				
+				/*
+				String updateStr = "";
+				//updateStr = String.format(format, args);
+				
+				PreparedStatement updateStatement = conn.prepareStatement(updateStr);
+				updateStatement.executeUpdate();
+				*/
 				
 				
 			} else {

@@ -175,9 +175,8 @@
 			</ul>
 
 			<ul class="Links">
-				<li><a class="dt" id="dt"></a></li>
-				<li class="links">Welcome <%=user%>!
-				</li>
+				<li><a class="dt" id="dt"></a></li><br>
+				<li class="links">Welcome <%=user%>!</li>
 				<li class="links"><a href="createAuction.jsp">Sell</a></li>
 				<li class="links"><a href="tools/logout.jsp">Logout</a></li>
 			</ul>
@@ -277,6 +276,7 @@
 								
 			</div>
 		</form>
+<<<<<<< HEAD
 			
 	</div>
 
@@ -291,6 +291,9 @@
 
 	</div>
 
+=======
+</div>
+>>>>>>> branch 'master' of https://galudino@bitbucket.org/Patricknogaj/buyme.git
 
 	<script>
 		var tday = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
@@ -333,5 +336,25 @@
 		setInterval(GetClock, 1000);
 	</script>
 </body>
+
+<div class="footer" style="width: 60%;">
+	<hr>
+	
+	<div class="container well">
+		<table style="width: 100%;">
+			<tr>
+				<th style="width: 33%"><u>ABOUT BuyMe</u></th>
+				<th style="width: 33%"><u>LINKS</u></th>
+				<th style="width: 33%"><u>CONTACT</u></th>
+			</tr>
+			<tr>
+				<td style="width: 33%; align: center; text-align: center;">BuyMe is an online auction website that allows users to experience an auction website like no other. An easy user experience to ensure 100% satisfaction between customers. Active customer staff to assist with any issues that may arise.</td>
+				<td style="width: 33%; align: center; text-align: center;"><a href="staff_login.jsp">Staff Login</a><br>Meet the Team<br><a href="FAQ.jsp">F.A.Q</a><br><a href="https://twitter.com/RutgersU">Twitter</a> | <a href="https://www.facebook.com/RutgersU">Facebook</a>  | <a href="https://www.instagram.com/RutgersU">Instagram</a> </td>
+				<td style="width: 33%; align: center; text-align: center;"><b>BuyMe LLC</b><br>Rutgers University<br>New Brunswick, NJ<br>P: (123) 456-7890</td>
+			</tr>
+		</table>
+	</div>
+	
+</div>
 </html>
 

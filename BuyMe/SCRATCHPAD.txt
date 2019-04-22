@@ -31,6 +31,27 @@ class JdbcInsert1 {
     }
 }
 
+HttpSession sess = request.getSession(true);
+sess.setAttribute("", ...);
+sess.setAttribute("currentAuctionID", auction_id);
+String user = (String) session.getAttribute("currentSessionUser");
+
+        if (user == null)
+            response.sendRedirect("index.jsp");
+            
+<%
+
+    String user = (String) session.getAttribute("currentSessionUser");
+
+    if(session != null) {
+    %>
+    //html code for button here
+
+    <% } else { %>
+
+    //rest of page
+    <% } %>
+
 
 AUCTION
 
