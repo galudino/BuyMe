@@ -23,7 +23,7 @@ public class FileUploadDBServlet extends HttpServlet {
 	private final String DB_URL = "jdbc:mysql://cs336buyme.cnnvlun9z7yl.us-east-2.rds.amazonaws.com:3306/buyme";
 	private final String DB_USER = "cs336buyme";
 	private final String DB_PASS = "Rutgers123";
-	
+		
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 				
 		Connection conn = null;
