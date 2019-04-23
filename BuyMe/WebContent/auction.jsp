@@ -295,6 +295,16 @@
  	} else {
  %>Sign up to bid when this auction opens! <%
  	}
+					%>
+					<div style="Display:">
+
+
+					<p style="padding-left: 20px;">
+						<b>Starting bid:</b>
+						<%
+							out.println("$" + auction_minBid + ".00");
+						%>
+						<%
  	} else if (nowTime.isAfter(endTime)) {
  %>
 					<h3>This auction has ended.</h3> <%
