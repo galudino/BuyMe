@@ -71,8 +71,8 @@
 			}
 			
 			
-			startingPrice = auctionSet.getInt(5);
-			minBid = auctionSet.getInt(6);
+			startingPrice = auctionSet.getInt(6);
+			minBid = auctionSet.getInt(5);
 			bidIncrement = auctionSet.getInt(7);
 			
 			Blob blob = auctionSet.getBlob("photo");
@@ -272,7 +272,7 @@
 						out.println("$" + auction_minBid + ".00");
 					%>
 					<br> <b>Enter bid $</b> <input class="borderless" type="number"
-						name="bid" min="<%=minBid+bidIncrement%>" step="1" required>.00 <br>
+						name="bid" min="<%=minimumBidAccepted%>" step="1" required>.00 <br>
 					<%
 						out.println(fmt);
 					%>
