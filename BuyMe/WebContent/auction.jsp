@@ -224,7 +224,7 @@
 						<%
 							out.println(item_size);
 						%>
-						<br> <b>Color:</b>
+						<b>Color:</b>
 						<%
 							out.println(item_color);
 						%>
@@ -244,6 +244,37 @@
 						<%
 							
 						%>
+						
+										<form action="bidServlet" method="post"
+			enctype="multipart/form-data">
+			<div style="Display:">
+				<p style="padding-left: 20px;">
+					<b>Starting bid:</b>
+					<%
+						out.println("$" + auction_minBid + ".00");
+					%>
+					<br> <b>Enter bid $</b> <input class="borderless" type="number"
+						name="bid" min="<%=minimumBidAccepted%>" step="1" required>.00 <br>
+					<%
+						out.println(fmt);
+					%>
+
+				</p>
+				
+				<input type="hidden" name="auction_id" value=<%=auction_id%>>
+				<input type="hidden" name="item_id" value=<%=item_id%>>
+				<input type="hidden" name="auction_minBid" value=<%=auction_minBid%>>
+				<input type="hidden" name="auction_startingPrice" value=<%=auction_startingPrice%>>
+				<input type="hidden" name="auction_bidIncrement" value=<%=auction_bidIncrement%>>
+				<input type="hidden" name="auction_startDate" value=<%=auction_startDate%>>
+				<input type="hidden" name="auction_endDate" value=<%=auction_endDate%>>
+				
+				<p style="padding-left: 20px;" class="h3move">
+					<button class="btn alt" value="Save">BID NOW</button>
+				</p>
+								
+			</div>
+		</form>
 					
 			</tr>
 		</table>
@@ -261,55 +292,10 @@
 						<br> <br>
 			</tr>
 		</table>
-
-
-				<form action="bidServlet" method="post"
-			enctype="multipart/form-data">
-			<div style="Display:">
-				<p>
-					<b>Starting bid:</b>
-					<%
-						out.println("$" + auction_minBid + ".00");
-					%>
-					<br> <b>Enter bid $</b> <input class="borderless" type="number"
-						name="bid" min="<%=minimumBidAccepted%>" step="1" required>.00 <br>
-					<%
-						out.println(fmt);
-					%>
-
-				</p>
-				
-				<input type="text" name="auction_id" value=<%=auction_id%>>
-				<input type="text" name="item_id" value=<%=item_id%>>
-				<input type="text" name="auction_minBid" value=<%=auction_minBid%>>
-				<input type="text" name="auction_startingPrice" value=<%=auction_startingPrice%>>
-				<input type="text" name="auction_bidIncrement" value=<%=auction_bidIncrement%>>
-				<input type="text" name="auction_startDate" value=<%=auction_startDate%>>
-				<input type="text" name="auction_endDate" value=<%=auction_endDate%>>
-				
-				<p class="h3move">
-					<button class="btn alt" value="Save">BID NOW</button>
-				</p>
-								
-			</div>
-		</form>
 					
 	</div>
 	
 	<%-- IF BID AMOUNT IS BELOW THE MINIMUM ACCEPTED SHOW AN ERROR --%>
-
-	
-
-	<div class="footer">
-		<hr>
-
-
-		<div class="container well">
-			<p>Footer things to add later...</p>
-		</div>
-
-	</div>
-</div>
 
 	<script>
 		var tday = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
