@@ -193,7 +193,7 @@ if (rs.next()){ %>
 		</tr>
 		<% do {%> 
 		<tr>
-			<td><%= rs.getInt(1)%></td>
+			<td><a href="auction.jsp?auction_id=<%=rs.getInt(1)%>">Auction <%=rs.getInt(1)%></a></td>
 			<td><%= rs.getString(2)%></td>
 			<td><%= rs.getString(3)%></td>
 			<td><%= rs.getString(4)%></td>
