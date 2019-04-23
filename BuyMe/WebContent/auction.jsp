@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" import="connection.DBConnect"%>
-<%@ page import="java.lang.*,java.io.*,java.util.*,java.sql.*"%>
+<%@ page
+	import="java.lang.*,java.io.*,java.util.*,java.text.*,java.time.*,java.sql.*"%>
 <%@ page import="javax.servlet.http.*,javax.servlet.*"%>
 <%@ page import="functions.FileUploadDBServlet"%>
 <%@ page import="functions.BidDBServlet"%>
@@ -39,11 +40,11 @@
 
 		String auctionInfo[] = null;
 		String itemInfo[] = null;
-		
+
 		int startingPrice = 0;
 		int minBid = 0;
 		int bidIncrement = 0;
-			
+
 		try {
 			DBConnect c = new DBConnect();
 			Connection conn = c.getConnection();
@@ -66,16 +67,15 @@
 					auctionInfo[i] = auctionSet.getString(auctionMetaData.getColumnName(1 + i));
 				}
 			}
-			
-			
+
 			startingPrice = auctionSet.getInt(6);
 			minBid = auctionSet.getInt(5);
 			bidIncrement = auctionSet.getInt(7);
-			
+
 			Blob blob = auctionSet.getBlob("photo");
 
 			System.out.println(blob);
-			
+
 			InputStream inputStream = blob.getBinaryStream();
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -131,6 +131,8 @@
 			ex.printStackTrace();
 		}
 
+		final boolean loggedIn = session.getAttribute("currentSessionUser") != null;
+
 		final String auction_startDate = auctionInfo[1];
 		final String auction_endDate = auctionInfo[2];
 		final String auction_itemName = auctionInfo[3];
@@ -144,12 +146,11 @@
 		final String item_manufacturer = itemInfo[4];
 		final String item_size = itemInfo[5];
 		final String item_color = itemInfo[6];
-		
-		
+
 		System.out.println("minBid is " + minBid);
 		System.out.println("startingPrice is " + startingPrice);
 		System.out.println("bidIncrement is " + bidIncrement);
-		
+
 		int minimumBidAccepted = minBid + bidIncrement;
 
 		/**
@@ -168,53 +169,81 @@
 		 * of auction_startingPrice.
 		 */
 		//final int minimumBidAccepted = auction_minBid + auction_bidIncrement;
-		final String fmt = String.format("<h6 style='padding-left:70px; margin: 0px; padding-top: 0px; padding-bottom: 0px; padding-right: 0px;'>(Enter US $%d.00 or more)</h6>", minimumBidAccepted);
+		final String enterMinimumOrMore = String.format(
+				"<h6 style='padding-left:70px; margin: 0px; padding-top: 0px; padding-bottom: 0px; padding-right: 0px;'>(Enter US $%d.00 or more)</h6>",
+				minimumBidAccepted);
 
+		final String dateTimeFormat = "yyyy-MM-dd HH:mm:ss.s";
+
+		java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern(dateTimeFormat);
+
+		java.time.LocalDateTime startTime = java.time.LocalDateTime.parse(auction_startDate, formatter);
+
+		java.time.LocalDateTime endTime = java.time.LocalDateTime.parse(auction_endDate, formatter);
+
+		java.time.LocalDateTime nowTime = java.time.LocalDateTime.now();
 	%>
-	
-<% if (session.getAttribute("currentSessionUser") == null) { %>
-    	<div class="header-container">
-	<div class="TopMenu">
-		<ul class="social">
-			<li><a href="https://twitter.com/RutgersU"><img src="data\img\social\twitter.png" height="25px" width="25px"></a></li>
-			<li><a href="https://www.facebook.com/RutgersU"><img src="data\img\social\facebook.png" height="25px" width="25px"></a></li>
-			<li><a href="https://www.instagram.com/RutgersU"><img src="data\img\social\instagram.png" height="25px" width="25px"></a></li>
-		</ul>
-		
-		<ul class="Links">
-			<li><a class="dt" id="dt"></a></li><br>
-			<li class="links"><a href="login.jsp">Sign in</a> or <a href="signup.jsp">Create an Account</a></li>
-		</ul>
+
+	<%
+		if (!loggedIn) {
+	%>
+	<div class="header-container">
+		<div class="TopMenu">
+			<ul class="social">
+				<li><a href="https://twitter.com/RutgersU"><img
+						src="data\img\social\twitter.png" height="25px" width="25px"></a></li>
+				<li><a href="https://www.facebook.com/RutgersU"><img
+						src="data\img\social\facebook.png" height="25px" width="25px"></a></li>
+				<li><a href="https://www.instagram.com/RutgersU"><img
+						src="data\img\social\instagram.png" height="25px" width="25px"></a></li>
+			</ul>
+
+			<ul class="Links">
+				<li><a class="dt" id="dt"></a></li>
+				<br>
+				<li class="links"><a href="login.jsp">Sign in</a> or <a
+					href="signup.jsp">Create an Account</a></li>
+			</ul>
+		</div>
 	</div>
-</div>
 
-<% } else {%>
+	<%
+		} else {
+	%>
 
-    	<div class="header-container">
-	<div class="TopMenu">
-		<ul class="social">
-			<li><a href="https://twitter.com/RutgersU"><img src="data\img\social\twitter.png" height="25px" width="25px"></a></li>
-			<li><a href="https://www.facebook.com/RutgersU"><img src="data\img\social\facebook.png" height="25px" width="25px"></a></li>
-			<li><a href="https://www.instagram.com/RutgersU"><img src="data\img\social\instagram.png" height="25px" width="25px"></a></li>
-		</ul>
-		
-		<ul class="Links">
-			<li><a class="dt" id="dt"></a></li><br>
-			<li class="links">Welcome <%=user%>!</li>
-			<li class="links"><a href="createAuction.jsp">Sell</a></li>
-			<li class="links"><a href="tools/logout.jsp">Logout</a></li>
-		</ul>
+	<div class="header-container">
+		<div class="TopMenu">
+			<ul class="social">
+				<li><a href="https://twitter.com/RutgersU"><img
+						src="data\img\social\twitter.png" height="25px" width="25px"></a></li>
+				<li><a href="https://www.facebook.com/RutgersU"><img
+						src="data\img\social\facebook.png" height="25px" width="25px"></a></li>
+				<li><a href="https://www.instagram.com/RutgersU"><img
+						src="data\img\social\instagram.png" height="25px" width="25px"></a></li>
+			</ul>
+
+			<ul class="Links">
+				<li><a class="dt" id="dt"></a></li>
+				<br>
+				<li class="links">Welcome <%=user%>!
+				</li>
+				<li class="links"><a href="createAuction.jsp">Sell</a></li>
+				<li class="links"><a href="tools/logout.jsp">Logout</a></li>
+			</ul>
+		</div>
 	</div>
-</div>
 
-<% } %>
+	<%
+		}
+	%>
 
-<div class="subheader">
-	<a href="index.jsp"><img src="data\img\project\logo.png"></a>
-</div>
+	<div class="subheader">
+		<a href="index.jsp"><img src="data\img\project\logo.png"></a>
+	</div>
 
 	<div class="content">
 		<hr width="100%">
+
 
 		<table>
 			<tr>
@@ -254,46 +283,80 @@
 						<%
 							out.println(auction_endDate);
 						%>
-						<br> <br> <b>Time Left:</b>
-						<%
-							
-						%>
-						
-										<form action="bidServlet" method="post"
-			enctype="multipart/form-data">
-			<div style="Display:">
-				<p style="padding-left: 20px;">
-					<b>Starting bid:</b>
-					<%
-						out.println("$" + auction_minBid + ".00");
-					%>
-					<br> <b>Enter bid $</b> <input class="borderless" style="margin-bottom: 0px;" type="number"
-						name="bid" min="<%=minimumBidAccepted%>" step="1" required>.00
-					<%
-						out.println(fmt);
-					%>
 
-				</p>
-				
-				<input type="hidden" name="auction_id" value=<%=auction_id%>>
-				<input type="hidden" name="item_id" value=<%=item_id%>>
-				<input type="hidden" name="auction_minBid" value=<%=auction_minBid%>>
-				<input type="hidden" name="auction_startingPrice" value=<%=auction_startingPrice%>>
-				<input type="hidden" name="auction_bidIncrement" value=<%=auction_bidIncrement%>>
-				<input type="hidden" name="auction_startDate" value=<%=auction_startDate%>>
-				<input type="hidden" name="auction_endDate" value=<%=auction_endDate%>>
-				
-				<p style="padding-left: 20px;" class="h3move">
-					<%if (session.getAttribute("currentSessionUser") != null) { %>
-					<button class="btn alt" value="Save">BID NOW</button>
-					<%} else { %>
-					<p style="padding-left: 50px;">You must be <b><a href="login.jsp">logged</a></b>  in to bid.</p>
-					<%}%>
-				</p>
-								
-			</div>
-		</form>
+
+						<%
+							if (nowTime.isBefore(startTime)) {
+						%>
 					
+					<h3>This auction is not active yet.</h3> <%
+ 	if (loggedIn) {
+ %>Please come back later! <%
+ 	} else {
+ %>Sign up to bid when this auction opens! <%
+ 	}
+ 	} else if (nowTime.isAfter(endTime)) {
+ %>
+					<h3>This auction has ended.</h3> <%
+ 	if (loggedIn) {
+ %>The winner is: (user goes here) <%
+ 	} else {
+ %>Sign up to win items like these! <%
+ 	}
+ 	} else {
+ %> <br> <br> <br> <b>Time Left:</b>
+					<form action="bidServlet" method="post"
+						enctype="multipart/form-data">
+						<div style="Display:">
+
+
+							<p style="padding-left: 20px;">
+								<b>Starting bid:</b>
+								<%
+									out.println("$" + auction_minBid + ".00");
+								%>
+								<br> <b>Enter bid $</b> <input class="borderless"
+									style="margin-bottom: 0px;" type="number" name="bid"
+									min="<%=minimumBidAccepted%>" step="1" required>.00
+								<%
+ 	out.println(enterMinimumOrMore);
+ %>
+							
+							<p style="padding-left: 20px;" class="h3move">
+								<%
+									if (loggedIn) {
+								%>
+								<button class="btn alt" value="Save">BID NOW</button>
+								<%
+									} else {
+								%>
+							
+							<p style="padding-left: 50px;">
+								You must be <b><a href="login.jsp">logged</a></b> in to bid.
+							</p>
+							<%
+								}
+							%>
+							</p>
+							</p>
+
+							<%
+								}
+							%>
+
+							<%-- ATTRIBUTES TO SEND TO SERVLET --%>
+							<input type="hidden" name="auction_id" value=<%=auction_id%>>
+							<input type="hidden" name="item_id" value=<%=item_id%>> <input
+								type="hidden" name="auction_minBid" value=<%=auction_minBid%>>
+							<input type="hidden" name="auction_startingPrice"
+								value=<%=auction_startingPrice%>> <input type="hidden"
+								name="auction_bidIncrement" value=<%=auction_bidIncrement%>>
+							<input type="hidden" name="auction_startDate"
+								value=<%=auction_startDate%>> <input type="hidden"
+								name="auction_endDate" value=<%=auction_endDate%>>
+
+						</div>
+					</form>
 			</tr>
 		</table>
 
@@ -310,10 +373,8 @@
 						<br> <br>
 			</tr>
 		</table>
-					
+
 	</div>
-	
-	<%-- IF BID AMOUNT IS BELOW THE MINIMUM ACCEPTED SHOW AN ERROR --%>
 
 	<script>
 		var tday = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
@@ -359,7 +420,7 @@
 
 <div class="footer" style="width: 60%;">
 	<hr>
-	
+
 	<div class="container well">
 		<table style="width: 100%;">
 			<tr>
@@ -368,13 +429,24 @@
 				<th style="width: 33%"><u>CONTACT</u></th>
 			</tr>
 			<tr>
-				<td style="width: 33%; align: center; text-align: center;">BuyMe is an online auction website that allows users to experience an auction website like no other. An easy user experience to ensure 100% satisfaction between customers. Active customer staff to assist with any issues that may arise.</td>
-				<td style="width: 33%; align: center; text-align: center;"><a href="staff_login.jsp">Staff Login</a><br>Meet the Team<br><a href="FAQ.jsp">F.A.Q</a><br><a href="https://twitter.com/RutgersU">Twitter</a> | <a href="https://www.facebook.com/RutgersU">Facebook</a>  | <a href="https://www.instagram.com/RutgersU">Instagram</a> </td>
-				<td style="width: 33%; align: center; text-align: center;"><b>BuyMe LLC</b><br>Rutgers University<br>New Brunswick, NJ<br>P: (123) 456-7890</td>
+				<td style="width: 33%; align: center; text-align: center;">BuyMe
+					is an online auction website that allows users to experience an
+					auction website like no other. An easy user experience to ensure
+					100% satisfaction between customers. Active customer staff to
+					assist with any issues that may arise.</td>
+				<td style="width: 33%; align: center; text-align: center;"><a
+					href="staff_login.jsp">Staff Login</a><br>Meet the Team<br>
+					<a href="FAQ.jsp">F.A.Q</a><br> <a
+					href="https://twitter.com/RutgersU">Twitter</a> | <a
+					href="https://www.facebook.com/RutgersU">Facebook</a> | <a
+					href="https://www.instagram.com/RutgersU">Instagram</a></td>
+				<td style="width: 33%; align: center; text-align: center;"><b>BuyMe
+						LLC</b><br>Rutgers University<br>New Brunswick, NJ<br>P:
+					(123) 456-7890</td>
 			</tr>
 		</table>
 	</div>
-	
+
 </div>
 </html>
 
