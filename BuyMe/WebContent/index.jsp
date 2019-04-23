@@ -69,7 +69,7 @@
 	<hr width="100%">
 
 <form action="searchItemHandler.jsp">
-<p align="center"> Find an item by name: <input type="text" name="item_name"/></p>
+<p align="center"> Find an item by name: <input type="text" name="item_name"/> <small><a href="search.jsp">Advance Search</a></small></p>
 
 <table style="width: 100%;">
 	<tr>
