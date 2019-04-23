@@ -244,8 +244,8 @@ if(month.equals("1")){
 int count = 0;
    
 if (rs2.next()){
-  %><h2 align="center">you may also be interested in the following auction(s)/item(s)</h2>
-    <table id="search">
+  %><div align="center"><h6 align="center"><i>You may also be interested in the following auction(s)/item(s)</i></h6>
+    <table style="width: 50%;" id="search">
       <tr>
         <th>Auction ID</th>
         <th>Start Time</th>
@@ -261,6 +261,7 @@ if (rs2.next()){
       </tr>
     <% count++; } while(rs2.next() && count < 4);%>
   </table>
+  </div>
 <%  
    
    ps2.close();
