@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+    pageEncoding="ISO-8859-1" import="functions.AskQuestionServlet"%>
+<%@ page import="java.io.*,java.util.*,java.sql.*"%>
+<%@ page import="java.util.regex.Pattern" %>
+<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
+<!DOCTYPE html>
 <%--
  * auction.jsp
  *
@@ -10,8 +14,6 @@
  * 01:198:336 Principles of Information and Data Management, Spring 2019
  * Professor Miranda Garcia
 --%>
-
-<!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
@@ -22,7 +24,8 @@
 
 <body>
 
-<div class="header-container">
+<% if (session.getAttribute("currentSessionUser") == null) { %>
+    	<div class="header-container">
 	<div class="TopMenu">
 		<ul class="social">
 			<li><a href="https://twitter.com/RutgersU"><img src="data\img\social\twitter.png" height="25px" width="25px"></a></li>
@@ -37,19 +40,61 @@
 	</div>
 </div>
 
-<div class="subheader">
-	<a href="index.jsp"><img src="data\img\project\logo.png"></a>
-		<ul class="content">
-			<li><a class="dt" id="dt"></a></li><br>
-			<li class="content"><a href="AskQuestion.jsp"><button type="button"><b>Ask a Customer Rep!</b></button></a>
+<% } else {%>
+
+	<%
+	String user = (String) session.getAttribute("currentSessionUser");
+	
+	if(user == null)
+		response.sendRedirect("index.jsp"); 
+		
+	%>
+
+    	<div class="header-container">
+	<div class="TopMenu">
+		<ul class="social">
+			<li><a href="https://twitter.com/RutgersU"><img src="data\img\social\twitter.png" height="25px" width="25px"></a></li>
+			<li><a href="https://www.facebook.com/RutgersU"><img src="data\img\social\facebook.png" height="25px" width="25px"></a></li>
+			<li><a href="https://www.instagram.com/RutgersU"><img src="data\img\social\instagram.png" height="25px" width="25px"></a></li>
 		</ul>
 		
+		<ul class="Links">
+			<li><a class="dt" id="dt"></a></li><br>
+			<li class="links">Welcome <%=user%>!</li>
+			<li class="links"><a href="createAuction.jsp">Sell</a></li>
+			<li class="links"><a href="tools/logout.jsp">Logout</a></li>
+		</ul>
+	</div>
+</div>
+
+<% } %>
+
+<div class="subheader">
+	<a href="index.jsp"><img src="data\img\project\logo.png"></a>		
 </div>
 
 <div class="content">
 	<hr width="100%">
+			
+			<%
+			String user = (String) session.getAttribute("currentSessionUser");
+			
+			if(user != null) { %>
+	  		 <div class="AskQ">
+				<br><h3 align="center">Ask a Question!</h3>
+			</div>
+			
+			<div style="Display: ">
+				<form action="askQuestionServlet" method="post" enctype="multipart/form-data">
+				<p align="center">Question: <input type="text" name="regQuestion" required></input> <button class="btn alt"><b>Submit</b></button></p>
+				</form>
+			</div>
+			
+			<hr width="100%">
+			<%}%>
+	
 			<div style="Display :">
-				<p><b>Frequently Asked Questions:</b></p>
+				<p align="center"><b>Frequently Asked Questions</b></p>
 				<ul>
 					<li>- How long will shipping take?</li><br>
 					<li><small><i>Shipping will usually take 5-7 business days once the bidding ends.</i></small></li><br>
@@ -61,7 +106,7 @@
 				
 			</div>
 
-</div>
+	</div>
 
 <script>
 	var tday=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
