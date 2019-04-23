@@ -147,11 +147,7 @@
 		final String item_size = itemInfo[5];
 		final String item_color = itemInfo[6];
 
-		System.out.println("minBid is " + minBid);
-		System.out.println("startingPrice is " + startingPrice);
-		System.out.println("bidIncrement is " + bidIncrement);
-
-		int minimumBidAccepted = minBid + bidIncrement;
+		final int minimumBidAccepted = minBid + bidIncrement;
 
 		/**
 		 * auction_minBid and auction_startingPrice are mutable values,
@@ -168,20 +164,61 @@
 		 * The value of the most recent bid becomes the value
 		 * of auction_startingPrice.
 		 */
-		//final int minimumBidAccepted = auction_minBid + auction_bidIncrement;
 		final String enterMinimumOrMore = String.format(
-				"<h6 style='padding-left:70px; margin: 0px; padding-top: 0px; padding-bottom: 0px; padding-right: 0px;'>(Enter US $%d.00 or more)</h6>",
+				"<h6 style='padding-left:70px; " + "margin: 0px; padding-top: 0px; "
+						+ "padding-bottom: 0px; padding-right: " + "0px;'>(Enter US $%d.00 or more)</h6>",
 				minimumBidAccepted);
 
 		final String dateTimeFormat = "yyyy-MM-dd HH:mm:ss.s";
-
 		java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern(dateTimeFormat);
 
 		java.time.LocalDateTime startTime = java.time.LocalDateTime.parse(auction_startDate, formatter);
-
 		java.time.LocalDateTime endTime = java.time.LocalDateTime.parse(auction_endDate, formatter);
-
 		java.time.LocalDateTime nowTime = java.time.LocalDateTime.now();
+
+		String winner = "(unspecified)";
+
+		/** 
+		 *	Determine winner, if applicable. (is nowTime after endTime?)
+		 */
+		if (nowTime.isAfter(endTime)) {
+			try {
+				DBConnect c = new DBConnect();
+				Connection conn = c.getConnection();
+
+				String updateStr = String
+						.format("UPDATE BID SET status = ? WHERE auction_id = ? and bid_amount = ?");
+
+				PreparedStatement bidStatement = conn.prepareStatement(updateStr);
+				bidStatement.setString(1, "1");
+				bidStatement.setString(2, auction_id);
+				bidStatement.setString(3, auction_minBid);
+
+				bidStatement.executeUpdate();
+
+				String queryStr = "SELECT username FROM BID WHERE status = ? AND auction_id = ?";
+
+				PreparedStatement statement = conn.prepareStatement(queryStr);
+
+				statement.setString(1, "1");
+				statement.setString(2, auction_id);
+
+				ResultSet resultSet = null;
+				resultSet = statement.executeQuery();
+
+				while (resultSet.next()) {
+					if (resultSet.isLast()) {
+						winner = resultSet.getString("username");
+					} else {
+						winner = "<error finding username>";
+					}
+				}
+
+				conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	%>
 
 	<%
@@ -232,7 +269,6 @@
 			</ul>
 		</div>
 	</div>
-
 	<%
 		}
 	%>
@@ -295,78 +331,86 @@
  	} else {
  %>Sign up to bid when this auction opens! <%
  	}
-					%>
+ %>
 					<div style="Display:">
 
 
-					<p style="padding-left: 20px;">
-						<b>Starting bid:</b>
+						<p style="padding-left: 20px;">
+							<b>Starting bid:</b>
+							<%
+								out.println("$" + auction_minBid + ".00");
+							%>
+							<%
+								} else if (nowTime.isAfter(endTime)) {
+							%>
+						
+						<h3>This auction has ended.</h3>
+
+
+
 						<%
-							out.println("$" + auction_minBid + ".00");
+							if (loggedIn) {
+									out.println("The winner is " + winner + "!");
+
+								} else {
+						%>Sign up to win items like these!
+						<%
+							}
+							} else {
 						%>
-						<%
- 	} else if (nowTime.isAfter(endTime)) {
- %>
-					<h3>This auction has ended.</h3> <%
- 	if (loggedIn) {
- %>The winner is: (user goes here) <%
- 	} else {
- %>Sign up to win items like these! <%
- 	}
- 	} else {
- %> <br> <br> <br> <b>Time Left:</b>
-					<form action="bidServlet" method="post"
-						enctype="multipart/form-data">
-						<div style="Display:">
-
-
-							<p style="padding-left: 20px;">
-								<b>Starting bid:</b>
-								<%
-									out.println("$" + auction_minBid + ".00");
-								%>
-								<br> <b>Enter bid $</b> <input class="borderless"
-									style="margin-bottom: 0px;" type="number" name="bid"
-									min="<%=minimumBidAccepted%>" step="1" required>.00
-								<%
+						<br> <br> <br> <b>Time Left:</b>
+						<form action="bidServlet" method="post"
+							enctype="multipart/form-data">
+							<div style="Display:">
+								<p style="padding-left: 20px;">
+									<b>Starting bid:</b>
+									<%
+										out.println("$" + auction_minBid + ".00");
+									%>
+									<br> <b>Enter bid $</b> <input class="borderless"
+										style="margin-bottom: 0px;" type="number" name="bid"
+										min="<%=minimumBidAccepted%>" step="1" required>.00
+									<%
  	out.println(enterMinimumOrMore);
  %>
-							
-							<p style="padding-left: 20px;" class="h3move">
+								</p>
+								<p style="padding-left: 20px;" class="h3move">
+									<%
+										if (loggedIn) {
+									%>
+									<button class="btn alt" value="Save">BID NOW</button>
+									<%
+										} else {
+									%>
+								</p>
+								<p style="padding-left: 50px;">
+									You must be <b><a href="login.jsp">logged</a></b> in to bid.
+								</p>
 								<%
-									if (loggedIn) {
+									}
 								%>
-								<button class="btn alt" value="Save">BID NOW</button>
+
+
+
 								<%
-									} else {
+									}
 								%>
-							
-							<p style="padding-left: 50px;">
-								You must be <b><a href="login.jsp">logged</a></b> in to bid.
-							</p>
-							<%
-								}
-							%>
-							</p>
-							</p>
 
-							<%
-								}
-							%>
+								<%-- ATTRIBUTES TO SEND TO SERVLET --%>
+								<input type="hidden" name="auction_id" value=<%=auction_id%>>
+								<input type="hidden" name="item_id" value=<%=item_id%>>
+								<input type="hidden" name="auction_minBid"
+									value=<%=auction_minBid%>> <input type="hidden"
+									name="auction_startingPrice" value=<%=auction_startingPrice%>>
+								<input type="hidden" name="auction_bidIncrement"
+									value=<%=auction_bidIncrement%>> <input type="hidden"
+									name="auction_startDate" value=<%=auction_startDate%>>
+								<input type="hidden" name="auction_endDate"
+									value=<%=auction_endDate%>>
 
-							<%-- ATTRIBUTES TO SEND TO SERVLET --%>
-							<input type="hidden" name="auction_id" value=<%=auction_id%>>
-							<input type="hidden" name="item_id" value=<%=item_id%>> <input
-								type="hidden" name="auction_minBid" value=<%=auction_minBid%>>
-							<input type="hidden" name="auction_startingPrice"
-								value=<%=auction_startingPrice%>> <input type="hidden"
-								name="auction_bidIncrement" value=<%=auction_bidIncrement%>>
-							<input type="hidden" name="auction_startDate"
-								value=<%=auction_startDate%>> <input type="hidden"
-								name="auction_endDate" value=<%=auction_endDate%>>
-
-						</div>
-					</form>
+							</div>
+						</form>
+					</div>
 			</tr>
 		</table>
 
@@ -380,14 +424,14 @@
 						<%
 							out.println(item_description);
 						%>
-						<br> <br>
+					</p> <br> <br>
 			</tr>
 		</table>
 
 	</div>
 
 
-<script>
+	<script>
 
 //var a = ["SELECT * FROM AUCTION(auction_id)"];
 for(auction_id){
