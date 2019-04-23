@@ -168,7 +168,7 @@
 		 * of auction_startingPrice.
 		 */
 		//final int minimumBidAccepted = auction_minBid + auction_bidIncrement;
-		final String fmt = String.format("(Enter US $%d.00 or more)", minimumBidAccepted);
+		final String fmt = String.format("<h6 style='padding-left:70px; margin: 0px; padding-top: 0px; padding-bottom: 0px; padding-right: 0px;'>(Enter US $%d.00 or more)</h6>", minimumBidAccepted);
 
 	%>
 	
@@ -267,8 +267,8 @@
 					<%
 						out.println("$" + auction_minBid + ".00");
 					%>
-					<br> <b>Enter bid $</b> <input class="borderless" type="number"
-						name="bid" min="<%=minimumBidAccepted%>" step="1" required>.00 <br>
+					<br> <b>Enter bid $</b> <input class="borderless" style="margin-bottom: 0px;" type="number"
+						name="bid" min="<%=minimumBidAccepted%>" step="1" required>.00
 					<%
 						out.println(fmt);
 					%>
@@ -287,7 +287,7 @@
 					<%if (session.getAttribute("currentSessionUser") != null) { %>
 					<button class="btn alt" value="Save">BID NOW</button>
 					<%} else { %>
-					<button class="btn alt" disabled>BID NOW</button>
+					<p style="padding-left: 50px;">You must be <b><a href="login.jsp">logged</a></b>  in to bid.</p>
 					<%}%>
 				</p>
 								
