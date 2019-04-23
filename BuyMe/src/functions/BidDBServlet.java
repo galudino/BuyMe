@@ -99,26 +99,31 @@ public class BidDBServlet extends HttpServlet {
 			insertStatement.setString(3, itemIDStr);
 			insertStatement.setString(4, userBidStr);
 			insertStatement.setString(5, winStatusStr);
-			
+
 			int z = insertStatement.executeUpdate();
 			// now update minimum bid within auction for this auction_id
 			// TODO
-			
-				System.out.println("LLL");
-				String test = String.format("UPDATE AUCTION SET lowest_bid = (SELECT MAX(?) FROM BID as b WHERE b.auction_id = ?) WHERE auction_id = ?");
-		
-				
-				PreparedStatement updateStatement = conn.prepareStatement(test);
-				//updateStatement.setString(parameterIndex, x);
-				
-				updateStatement.setInt(1, bid);
-				updateStatement.setString(2, userStr);
-				updateStatement.setString(3, userStr);
-				
-				updateStatement.executeUpdate();
 
-			
+			System.out.println("LLL");
 
+			String updateStr = "UPDATE AUCTION SET lowest_bid = ? WHERE auction_id = ?";
+
+			//@formatter:off		
+				/*		
+				UPDATE AUCTION as a
+				SET a.lowest_bid = (
+					SELECT MAX(b.bid_id)
+					FROM BID as b
+					WHERE b.auction_id = 52
+				) WHERE a.auction_id = 52;
+				*/
+				//@formatter:on
+
+			PreparedStatement updateStatement = conn.prepareStatement(updateStr);
+			updateStatement.setString(1, userBidStr);
+			updateStatement.setString(2, auctionIDStr);
+
+			updateStatement.executeUpdate();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
