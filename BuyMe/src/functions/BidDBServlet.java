@@ -83,7 +83,7 @@ public class BidDBServlet extends HttpServlet {
 
 			insertStatement.executeUpdate();
 			
-			int newMinimumBid = bid + bidIncrement;
+			int newMinimumBid = bid;
 			String newMinimumBidStr = Integer.toString(newMinimumBid);
 
 			String updateStr = "UPDATE AUCTION SET lowest_bid = ? WHERE auction_id = ?";
