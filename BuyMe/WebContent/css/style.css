@@ -67,7 +67,7 @@ div.content {
 
 div.footer {
 	bottom: 0px;
-	position: absolute;
+	position: fixed;
 	width: 100%;
 	left: 50%;
 	transform: translateX(-50%);
