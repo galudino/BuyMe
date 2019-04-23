@@ -1,11 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1" import="connection.DBConnect"%>
+<%@ page import="java.io.*,java.util.*,java.sql.*"%>
+<%@ page import="java.util.regex.Pattern" %>
+<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
 <!DOCTYPE html>
+
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>BuyMe - AdminCP: Generate Report</title>
-<link rel="stylesheet" type="text/css" href="css/style.css">              
+<title>BuyMe - AdminCP: Generate Reports</title>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/searchItemHandler.css">
 </head>
 
 <body>
@@ -45,6 +50,86 @@
 
 <div class="content">
 	<hr width="100%">
+	
+	<%
+		PreparedStatement prep = null;
+		ResultSet rs = null;
+	
+		String totalEarnings = "SELECT SUM(bid_amount) FROM buyme.BID WHERE status = 1;";
+		String bestUser = "SELECT MAX(username) FROM buyme.BID WHERE status = 1;";
+		
+		String totalEarningAns = "";
+		String bestUserAns = "";
+	
+		try {
+			DBConnect c = new DBConnect();
+			Connection conn = c.getConnection();
+			Statement statement = conn.createStatement();
+			
+			prep = conn.prepareStatement(totalEarnings);
+			rs = prep.executeQuery();
+			
+			if(rs.next()) {
+				totalEarningAns = rs.getString(1);
+			}
+			
+			prep = conn.prepareStatement(bestUser);
+			rs = prep.executeQuery();
+			
+			if(rs.next()) {
+				bestUserAns = rs.getString(1);
+			}
+			
+		} catch (Exception e) {
+			
+		}
+	%>
+
+	<div align="center">
+	
+		<h2>Sales Report</h2>
+	
+		<table id="search">
+			<tr>
+				<th>Total Earnings</th>
+				<th>Best Selling Item</th>
+				<th>Best Buyer</th>
+			</tr>
+			<tr>
+				<td align="center">$<%=totalEarningAns%></td>
+				<td align="center">BLANK</td>
+				<td align="center"><%=bestUserAns%></td>
+			</tr>
+		</table>
+	</div>
+	
+	<div style="width: 50%; padding-left: 33%;">
+	
+		<h3 style="padding-left: 120px">Generate Reports</h3>
+		<p>Earning for item: <input type="text" class="borderless" style="width: 25%;">
+		<p>Earning for item-type: <input type="text" class="borderless" style="width: 25%;">
+		<p>Earning for end-user: <input type="text" class="borderless" style="width: 25%;">
+		<p style="padding-left: 120px"><button class="btn alt">Generate</button></p>
+	
+		<div>
+	
+		<h4 style="padding-left: 110px">Generated Report</h4>
+	
+		<table style="padding-left: 60px" id="search">
+			<tr>
+				<th>Item</th>
+				<th>Item-Type</th>
+				<th>End-User</th>
+			</tr>
+			<tr>
+				<td>blank</td>
+				<td>blank</td>
+				<td>blank</td>
+			</tr>
+		</table>
+	</div>
+	
+	</div>
 
 </div>
 

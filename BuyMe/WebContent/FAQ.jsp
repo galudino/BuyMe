@@ -74,13 +74,7 @@
 </div>
 
 <div class="content">
-	<hr width="100%">	
-	</div>
-	
-	
-	
-	
-			
+	<hr width="100%">			
 			<%
 			String user = (String) session.getAttribute("currentSessionUser");
 			

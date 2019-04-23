@@ -1,21 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1" import="connection.DBConnect"%>
+<%@ page import="java.io.*,java.util.*,java.sql.*"%>
+<%@ page import="java.util.regex.Pattern" %>
+<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>BuyMe - AdminCP</title>
-<link rel="stylesheet" type="text/css" href="css/style.css">              
+<title>BuyMe - Customer Rep. CP</title>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/searchItemHandler.css">              
 </head>
 
 <body>
 
 	<%
-		String user = (String) session.getAttribute("currentSessionAdmin");
-
+		String user = (String) session.getAttribute("currentSessionCR");
 		if (user == null)
-			response.sendRedirect("index.jsp");
-			
+			response.sendRedirect("staff_login.jsp");	
 	%>
 
 	<div class="header-container">
@@ -32,33 +34,58 @@
 			<ul class="Links">
 				<li><a class="dt" id="dt"></a></li><br>
 				<li class="links">Welcome <%=user%>!</li>
-				<li class="links"><a href="generate_report.jsp">Generate</a></li>
-				<li class="links"><a href="create_custrep.jsp">Create Cust. Rep</a></li>
+				<li class="links"><a href="answer_question.jsp">Answer Questions</a></li>
+				<li class="links"><a href="create_custrep.jsp">Tools</a></li>
 				<li class="links"><a href="tools/logout.jsp">Logout</a></li>
 			</ul>
 		</div>
 	</div>
 
 <div class="subheader">
-	<a href="admin_cp.jsp"><img src="data\img\project\logo.png"></a>
+	<a href="custrep_cp.jsp"><img src="data\img\project\logo.png"></a>
 </div>
 
 <div class="content">
 	<hr width="100%">
 
-	<p>Welcome to the Administator panel. 
+	<p align="center">Below are the following questions that need answers, when the answer is provided it will update in the FAQ page.</p>
 	
-	<br><br>
-	You can add customer representatives which are responsible for: <br>
-	- Answering questions that users might have<br>
-	- Being able to remove/edit user accounts<br>
-	- Being able to remove/edit bids<br>
-	- Being able to remove/edit auctions<br><br>
+	<div align="center">
 	
-	You are able to generate reports based on:<br>
-	- Total earnings<br>
-	- Best selling items<br>
-	- Best user (most items won)<br></p>
+	<%
+		try {
+			DBConnect c = new DBConnect();
+			Connection conn = c.getConnection();
+			Statement statement = conn.createStatement();
+			
+			String query = "SELECT * FROM buyme.QUESTIONS WHERE answer IS null;";
+			
+			PreparedStatement ps = conn.prepareStatement(query);
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				%>
+				<table id="search">
+					<tr>
+						<th>Question</th>
+						<th>Answer</th>
+					</tr>
+					<% do { %>
+					<tr>
+						<td><%=rs.getString(2)%></td>
+						<td><input type="text"><button style="margin-left: 30px;" class="btn alt">Submit</button></td>
+					</tr>
+					<% } while(rs.next()); %>
+				</table>
+				<%
+			}
+		} catch (Exception e) {
+			
+		}
+	%>
+	
+
+	</div>
 </div>
 
 <script>

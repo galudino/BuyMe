@@ -74,7 +74,7 @@
 			%>
 			<script>
 				alert("Please enter your username and password.");
-				window.location.href = "login.jsp";
+				window.location.href = "staff_login.jsp";
 			</script>
 			<%
 		} else if(_user.equalsIgnoreCase("admin")) {
@@ -91,11 +91,20 @@
 				<%	
 			}
 		} else {
+			String custLogin = "SELECT * FROM CUSTOMER_REP c WHERE c.username='" + _user + "' and c.password='" + _pass + "'";
+			ResultSet custResult = statement.executeQuery(custLogin);
 			
-			String example = "SELECT * FROM CUSTOMER_REP c WHERE c.username='" + _user + "' and c.password='" + _pass + "'";
-			//ResultSet result = statement.executeQuery(example);
-			System.out.println("ATTEMPTING TO LOGIN w/ customer rep acc");
+			if(custResult.next()) {
+								
+				HttpSession sess = request.getSession(true);
+				sess.setAttribute("currentSessionCR", _user);
+				%>
+				<script>
+					window.location.href = "custrep_cp.jsp";
+				</script>
+				<%
 			}
+		}
 		conn.close();
 	} catch(Exception e) {
 		//System.out.println("ERROR: " + e.getMessage());

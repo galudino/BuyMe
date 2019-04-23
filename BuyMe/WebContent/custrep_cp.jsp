@@ -4,18 +4,16 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>BuyMe - AdminCP</title>
+<title>BuyMe - Customer Rep. CP</title>
 <link rel="stylesheet" type="text/css" href="css/style.css">              
 </head>
 
 <body>
 
 	<%
-		String user = (String) session.getAttribute("currentSessionAdmin");
-
+		String user = (String) session.getAttribute("currentSessionCR");
 		if (user == null)
-			response.sendRedirect("index.jsp");
-			
+			response.sendRedirect("staff_login.jsp");	
 	%>
 
 	<div class="header-container">
@@ -32,33 +30,29 @@
 			<ul class="Links">
 				<li><a class="dt" id="dt"></a></li><br>
 				<li class="links">Welcome <%=user%>!</li>
-				<li class="links"><a href="generate_report.jsp">Generate</a></li>
-				<li class="links"><a href="create_custrep.jsp">Create Cust. Rep</a></li>
+				<li class="links"><a href="answer_question.jsp">Answer Questions</a></li>
+				<li class="links"><a href="create_custrep.jsp">Tools</a></li>
 				<li class="links"><a href="tools/logout.jsp">Logout</a></li>
 			</ul>
 		</div>
 	</div>
 
 <div class="subheader">
-	<a href="admin_cp.jsp"><img src="data\img\project\logo.png"></a>
+	<a href="custrep_cp.jsp"><img src="data\img\project\logo.png"></a>
 </div>
 
 <div class="content">
 	<hr width="100%">
 
-	<p>Welcome to the Administator panel. 
+	<p>Welcome to the Customer Representative panel. 
 	
 	<br><br>
-	You can add customer representatives which are responsible for: <br>
-	- Answering questions that users might have<br>
-	- Being able to remove/edit user accounts<br>
-	- Being able to remove/edit bids<br>
-	- Being able to remove/edit auctions<br><br>
+	You can answer questions that users have. <br><br>
 	
-	You are able to generate reports based on:<br>
-	- Total earnings<br>
-	- Best selling items<br>
-	- Best user (most items won)<br></p>
+	You are also able to edit/remove the following:<br>
+	- Edit account information, bids, and auctions<br>
+	- Remove bids<br>
+	- Remove auctions<br></p>
 </div>
 
 <script>
