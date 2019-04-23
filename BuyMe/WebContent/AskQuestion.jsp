@@ -39,8 +39,8 @@
 		</div>
 		<div style="Display: ">
 				<form method="post" action="AskQuestion.jsp">
-				<p>Question: <input type="text" placeholder="Enter Question" name="regQuestion" required></p>
-				<p></p>
+				<p>Username: <input type="text" placeholder="Enter Username" name="regUsername" required></p>
+				<p>Question: <input type="text" placeholder="Enter Question" name="regQuestion" required></p></p>
 			    <button type="button"><b>Submit</b></button>
 	<ul class="content">
 		<li><a class="dt" id="dt"></a></li><br>
@@ -67,27 +67,33 @@ try {
 		Connection conn = c.getConnection();
 		Statement statement = conn.createStatement();
 		
-		String newQuestion = request.getParameter("regqQuestion");
+		String newUsername = request.getParameter("regUsername");
+		String newQuestion = request.getParameter("regQuestion");
 		
-		System.out.println(newQuestion + " ");
+		System.out.println(newUsername + " " + newQuestion);
 		
-	if(newQuestion.equals(" ")) {
+	if(newUsername.equals(" ") || newQuestion.equals(" ") ) {
 	%>
 		<script>
 				alert("Sorry. Please fill out all fields!");
-				window.location.href = "AskQuestion.jsp";
+				window.location.href = "#";
 			</script>
 			<%
 		}
 
-	String insert = "INSERT INTO questions(question)" + "VALUES (?)";
+	String insert = "INSERT INTO QUESTIONS(username, question)" + "VALUES (?, ?)";
 		PreparedStatement ps = conn.prepareStatement(insert);
-		ps.setString(1, newQuestion);
+		ps.setString(1, newUsername);
+		ps.setString(2, newQuestion);
 		
-		ps.executeUpdate();
+		int x = ps.executeUpdate();
+		System.out.println(x);
+		
+	//	ps.executeUpdate();
 		
 		conn.close();
 		
+		session.setAttribute("username", newUsername);
 		session.setAttribute("question", newQuestion);
 	%>
 		<script>
@@ -95,6 +101,9 @@ try {
 			window.location.href ="FAQ.jsp";
 		</script>
 		<%
+		
+		System.out.println(newUsername + " " + newQuestion);
+		
 	 } catch (Exception e) {
 		System.out.println("ERROR: " + e.getMessage());
 	}
