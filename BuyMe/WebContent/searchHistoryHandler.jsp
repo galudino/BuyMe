@@ -3,6 +3,8 @@
 <%@ page import = "java.sql.*" %>
 <%@ page import="java.io.*,java.util.*,java.sql.*"%>
 <%@ page import="javax.servlet.http.*,javax.servlet.*"%>
+<%@ page import="java.text.SimpleDateFormat"%>
+<%@ page import="java.util.Date" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,13 +63,8 @@ if (user_id == null || user_id.equals("")){
 		<%
 		}
 	}else {
-		ps = conn.prepareStatement("SELECT auction_id.auction, title.auction, amount.auction, start_time.auction, date_time.auction"
-				                  +" FROM AUCTION auction"
-				                  +" WHERE auction_id.auction in ("
-				                  +" SELECT auction_id.bid"
-				                  +" FROM BID bid"
-				                  +" WHERE user_id = ?)");
-		ps.setString(1, "username");
+		ps = conn.prepareStatement("select b.bid_id, b.auction_id, b.item_id, b.bid_amount, b.status from BID b where b.username = ? ;");
+		ps.setString(1, user_id);
 		rs = ps.executeQuery();
 		
 		if (rs.next()){ 
@@ -75,24 +72,24 @@ if (user_id == null || user_id.equals("")){
 		%>
 		<table>
 			<tr>
+				<th>Bid ID</th>
 				<th>Auction ID</th>
-				<th>Title</th>
+				<th>Item ID</th>
 				<th>Amount</th>
-				<th>Start Time</th>
-				<th>End time</th>
+				<th>Status</th>
 			</tr>
 		<% do {%> 
 				<tr>
 					<td><%= rs.getInt(1)%></td>
-					<td><%= rs.getString(2)%></td>
+					<td><%= rs.getInt(1)%></td>
 					<td><%= rs.getInt(3)%></td>
-					<td><%= rs.getTimestamp(4)%></td>
-					<td><%= rs.getTimestamp(5) %></td>
+					<td><%= rs.getInt(4)%></td>
+					<td><%if ((rs.getInt(5)==0)){out.println("Ongoing");}else{out.println("Ended");}%></td>
 				</tr>
 			<% } while(rs.next());%>
 		</table>	
 		<%} else {%>
-			<h3>No Bidding (Auction) history for this user</h3>
+			<h3>No Bidding history for this user</h3>
 		<%		
 		}
 	}

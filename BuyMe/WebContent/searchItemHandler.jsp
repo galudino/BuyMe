@@ -3,6 +3,8 @@
 <%@ page import = "java.sql.*" %>
 <%@ page import="java.io.*,java.util.*,java.sql.*"%>
 <%@ page import="javax.servlet.http.*,javax.servlet.*"%>
+<%@ page import="java.text.SimpleDateFormat"%>
+<%@ page import="java.util.Date" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -211,6 +213,61 @@ if (rs.next()){ %>
 
 ps.close();
 rs.close();
+
+PreparedStatement ps2 = null;
+ResultSet rs2 = null;
+
+SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
+Date date = new Date();
+String currentDate = formatter.format(date);
+String month = currentDate.substring(5,7);
+   
+String newDate = "";
+   
+if(month.equals("1")){
+  String strYear = currentDate.substring(0,4);
+  int newYear = Integer.parseInt(strYear);
+  newYear = newYear - 1;
+  newDate = newDate + Integer.toString(newYear) + "-" + "12-" + currentDate.substring(8,10);  
+} else {
+  String strMonth = currentDate.substring(5,7);
+  int newMonth = Integer.parseInt(strMonth);
+  newMonth =  newMonth - 1;
+  newDate = newDate + currentDate.substring(0,5) + Integer.toString(newMonth) + "-" + currentDate.substring(8,10);
+} 
+   ps2 = conn.prepareStatement("select a.auction_id, a.start_time, a.end_time, a.title, i.name"
+                           + " from AUCTION a, ITEM i"
+                           + " where i.item_id = a.auction_id and a.start_time >= '" + newDate + "' and a.start_time <= '" + currentDate + "';");
+   
+   rs2 = ps2.executeQuery();
+
+int count = 0;
+   
+if (rs2.next()){
+  %><h2 align="center">you may also be interested in the following auction(s)/item(s)</h2>
+    <table id="search">
+      <tr>
+        <th>Auction ID</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Title/Item Name</th>
+      </tr>
+    <% do {%> 
+      <tr>
+        <td><%= rs2.getInt(1)%></td>
+        <td><%= rs2.getTimestamp(2)%></td>
+        <td><%= rs2.getTimestamp(3)%></td>
+        <td><%= rs2.getString(4)%></td>
+      </tr>
+    <% count++; } while(rs2.next() && count < 4);%>
+  </table>
+<%  
+   
+   ps2.close();
+   rs2.close();
+   
+}
+
 conn.close();%>
 </div>
 </body>
