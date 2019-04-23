@@ -315,6 +315,23 @@
 	
 	<%-- IF BID AMOUNT IS BELOW THE MINIMUM ACCEPTED SHOW AN ERROR --%>
 
+
+<script>
+
+//var a = ["SELECT * FROM AUCTION(auction_id)"];
+for(auction_id==true){
+	var i = ["SELECT * FROM AUCTION(usernames)"];//create an array of usernames in auction table with this auction id
+}
+for(int i=0, i<array.length, i++){
+	String x = "INSERT INTO ALERTS(usernames[i] + auction_id + "A higher bid was placed on an iten you bid on!");
+	execute.statement(x);
+	
+}
+
+</script>
+
+
+
 	<script>
 		var tday = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
 				"Friday", "Saturday" ];
