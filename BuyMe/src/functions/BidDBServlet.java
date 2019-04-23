@@ -10,13 +10,11 @@
  */
 package functions;
 
-import java.sql.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.io.*;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -24,7 +22,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * Represents a bid servlet for an auction-style website
@@ -35,10 +32,11 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/bidServlet")
 @MultipartConfig(maxFileSize = 16177215) // upload file's size up to 16MB
 public class BidDBServlet extends HttpServlet {
-
+	
 	/**
 	 * serialVersionUID
 	 */
+	private static final long serialVersionUID = 236580712716675606L;
 
 	private final String DB_URL = "jdbc:mysql://cs336buyme.cnnvlun9z7yl.us-east-2.rds.amazonaws.com:3306/buyme";
 	private final String DB_USER = "cs336buyme";
@@ -55,39 +53,22 @@ public class BidDBServlet extends HttpServlet {
 
 		String auctionIDStr = request.getParameter("auction_id");
 		String itemIDStr = request.getParameter("item_id");
-		String startDateStr = "";
-		String endDateStr = "";
 
 		String userBidStr = request.getParameter("bid");
 		String minimumBidStr = request.getParameter("auction_minBid");
-		String startingPriceStr = request.getParameter("auction_startingPrice");
+		//String startingPriceStr = request.getParameter("auction_startingPrice");
 		String bidIncrementStr = request.getParameter("auction_bidIncrement");
 		String winStatusStr = "0";
 
-		/**
-		 * Parse Strings to ints
-		 */
 		int bid = Integer.valueOf(userBidStr);
 		int minimumBid = Integer.valueOf(minimumBidStr);
-		int startingPrice = Integer.valueOf(startingPriceStr);
+		//int startingPrice = Integer.valueOf(startingPriceStr);
 		int bidIncrement = Integer.valueOf(bidIncrementStr);
 
 		try {
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 			conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
 
-			if (conn != null)
-				System.out.println("test");
-
-			java.sql.Statement statement = conn.createStatement();
-			ResultSet auctionSet = null;
-			auctionSet = statement.executeQuery(
-					"SELECT start_time, " + "end_time from AUCTION as a where a.auction_id = " + auctionIDStr);
-
-			// evaluate date with now
-			boolean validDate = true;
-
-			// add bid to bid table
 			String insertStr = "";
 			insertStr = String
 					.format("INSERT INTO BID(auction_id, username, item_id, bid_amount, status)" + "VALUES(?,?,?,?,?)");
@@ -100,31 +81,18 @@ public class BidDBServlet extends HttpServlet {
 			insertStatement.setString(4, userBidStr);
 			insertStatement.setString(5, winStatusStr);
 
-			int z = insertStatement.executeUpdate();
-			// now update minimum bid within auction for this auction_id
-			// TODO
-
-			System.out.println("LLL");
+			insertStatement.executeUpdate();
+			
+			int newMinimumBid = bid + bidIncrement;
+			String newMinimumBidStr = Integer.toString(newMinimumBid);
 
 			String updateStr = "UPDATE AUCTION SET lowest_bid = ? WHERE auction_id = ?";
-
-			//@formatter:off		
-				/*		
-				UPDATE AUCTION as a
-				SET a.lowest_bid = (
-					SELECT MAX(b.bid_id)
-					FROM BID as b
-					WHERE b.auction_id = 52
-				) WHERE a.auction_id = 52;
-				*/
-				//@formatter:on
-
+			
 			PreparedStatement updateStatement = conn.prepareStatement(updateStr);
-			updateStatement.setString(1, userBidStr);
+			updateStatement.setString(1, newMinimumBidStr);
 			updateStatement.setString(2, auctionIDStr);
 
 			updateStatement.executeUpdate();
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -142,20 +110,5 @@ public class BidDBServlet extends HttpServlet {
 		 * they are sent back to the auction page from which they made the bid.
 		 */
 		response.sendRedirect("auction.jsp?auction_id=" + auctionIDStr);
-	}
-
-	/**
-	 * Method to convert a String into a Date object
-	 * 
-	 * @param str String to parse into a Date
-	 * 
-	 * @return a Date object represented by the param str
-	 */
-	private LocalDateTime convertJavaDate(String str) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/mm/dd HH:mm:ss:s");
-
-		LocalDateTime ldt = LocalDateTime.parse(str, formatter);
-
-		return ldt;
 	}
 }
