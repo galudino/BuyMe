@@ -376,6 +376,22 @@
 
 	</div>
 
+
+<script>
+
+//var a = ["SELECT * FROM AUCTION(auction_id)"];
+for(auction_id){
+	var i = ["SELECT * FROM buyme.BID(username)"];//create an array of usernames in bids table with this auction id
+for(int i=0, i<array.length, i++){
+	String x = "INSERT INTO buyme.ALERTS(username + auction_id + message) VALUES(username[i] + auction_id + "A higher bid was placed on an iten you bid on!");
+	execute.statement(x);	
+}
+}
+
+</script>
+
+
+
 	<script>
 		var tday = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
 				"Friday", "Saturday" ];

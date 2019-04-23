@@ -125,7 +125,7 @@ try{
 	var mm = String(today.getMonth() + 1).padStart(2, '0');
 	var yyyy = today.getFullYear();
 	today= mm + '/' + dd + '/' + yyyy;
-	}
+}
 	//finally
 	//{
 	//document.write(today); 
@@ -136,19 +136,19 @@ try{
 
 <script>
 
-
-for(auction_id==true){
+var a = ["SELECT * FROM AUCTION(auction_id)"];
+for(auction_id==a){
 	var i = ["SELECT * FROM AUCTION(usernames)"];//create an array of usernames in auction table with this auction id
-	
+}
 for(int i=0, i<array.length, i++){
 	String x = "INSERT INTO ALERTS(usernames[i] + auction_id + "A higher bid was placed on an iten you bid on!");
 	execute.statement(x);
-}	
+	
 }
 
+</script>
 
-
-
+<script>
 
 for(user){
 	al = ("SELECT * FROM ALERTS(alert_id))");
@@ -157,11 +157,9 @@ for(user){
 		document.write(notifs);
 	}
 	}
-	
-	
-}
-	
-
+		}
+		
+		
 </script>
 
 
