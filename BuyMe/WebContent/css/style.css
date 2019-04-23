@@ -19,6 +19,7 @@ html, body {
    line-height:1.5
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;      
+  
 	
 }
 
@@ -67,7 +68,7 @@ div.content {
 
 div.footer {
 	bottom: 0px;
-	position: fixed;
+	position: relative;
 	width: 100%;
 	left: 50%;
 	transform: translateX(-50%);
