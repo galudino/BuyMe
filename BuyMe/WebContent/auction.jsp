@@ -42,17 +42,18 @@
 
 		String auctionInfo[] = null;
 		String itemInfo[] = null;
-
+		
+		int startingPrice = 0;
+		int minBid = 0;
+		int bidIncrement = 0;
+			
 		try {
 			DBConnect c = new DBConnect();
 			Connection conn = c.getConnection();
 
 			Statement statement = conn.createStatement();
 
-			ResultSet auctionSet = null;
-			ResultSet itemSet = null;
-
-			auctionSet = statement.executeQuery("SELECT * FROM AUCTION WHERE auction_id = " + auction_id);
+			ResultSet auctionSet = statement.executeQuery("SELECT * FROM AUCTION WHERE auction_id = " + auction_id);
 
 			ResultSetMetaData auctionMetaData = auctionSet.getMetaData();
 			//ResultSetMetaData itemMetaData = itemSet.getMetaData();
@@ -68,11 +69,16 @@
 					auctionInfo[i] = auctionSet.getString(auctionMetaData.getColumnName(1 + i));
 				}
 			}
-
+			
+			
+			startingPrice = auctionSet.getInt(5);
+			minBid = auctionSet.getInt(6);
+			bidIncrement = auctionSet.getInt(7);
+			
 			Blob blob = auctionSet.getBlob("photo");
 
 			System.out.println(blob);
-
+			
 			InputStream inputStream = blob.getBinaryStream();
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -141,6 +147,13 @@
 		final String item_manufacturer = itemInfo[4];
 		final String item_size = itemInfo[5];
 		final String item_color = itemInfo[6];
+		
+		
+		System.out.println("minBid is " + minBid);
+		System.out.println("startingPrice is " + startingPrice);
+		System.out.println("bidIncrement is " + bidIncrement);
+		
+		int minimumBidAccepted = minBid + bidIncrement;
 
 		/**
 		 * auction_minBid and auction_startingPrice are mutable values,
@@ -158,9 +171,8 @@
 		 * of auction_startingPrice.
 		 */
 		//final int minimumBidAccepted = auction_minBid + auction_bidIncrement;
-		//final String fmt = String.format("(Enter US $%d.00 or more)", minimumBidAccepted);
-		final String fmt = String.format("(Enter at least US $%s plus $%s or more)", auction_minBid,
-				auction_bidIncrement);
+		final String fmt = String.format("(Enter US $%d.00 or more)", minimumBidAccepted);
+
 	%>
 	
 	<div class="header-container">
@@ -250,18 +262,21 @@
 			</tr>
 		</table>
 
-		<form action="bidServlet" method="post" enctype="multipart/form-data">
+
+				<form action="bidServlet" method="post"
+			enctype="multipart/form-data">
 			<div style="Display:">
 				<p>
 					<b>Starting bid:</b>
 					<%
 						out.println("$" + auction_minBid + ".00");
 					%>
-					<br> <b>Enter bid $</b> <input class="borderless" type="text"
-						name="bid" required>.00 <br>
+					<br> <b>Enter bid $</b> <input class="borderless" type="number"
+						name="bid" min="<%=minBid+bidIncrement%>" step="1" required>.00 <br>
 					<%
 						out.println(fmt);
 					%>
+
 				</p>
 				
 				<input type="text" name="auction_id" value=<%=auction_id%>>
@@ -269,6 +284,8 @@
 				<input type="text" name="auction_minBid" value=<%=auction_minBid%>>
 				<input type="text" name="auction_startingPrice" value=<%=auction_startingPrice%>>
 				<input type="text" name="auction_bidIncrement" value=<%=auction_bidIncrement%>>
+				<input type="text" name="auction_startDate" value=<%=auction_startDate%>>
+				<input type="text" name="auction_endDate" value=<%=auction_endDate%>>
 				
 				<p class="h3move">
 					<button class="btn alt" value="Save">BID NOW</button>
@@ -276,10 +293,12 @@
 								
 			</div>
 		</form>
-<<<<<<< HEAD
-			
+					
 	</div>
+	
+	<%-- IF BID AMOUNT IS BELOW THE MINIMUM ACCEPTED SHOW AN ERROR --%>
 
+	
 
 	<div class="footer">
 		<hr>
@@ -290,10 +309,7 @@
 		</div>
 
 	</div>
-
-=======
 </div>
->>>>>>> branch 'master' of https://galudino@bitbucket.org/Patricknogaj/buyme.git
 
 	<script>
 		var tday = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
