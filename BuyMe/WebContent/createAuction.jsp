@@ -7,7 +7,7 @@
 <%--
  * createAuction.jsp
  *
- * Copyright (c) 2019
+ * Copyright (c) 2019 Patrick Nogaj, Gemuele Aludino
  * All rights reserved.
  *
  * Rutgers University: School of Arts and Sciences

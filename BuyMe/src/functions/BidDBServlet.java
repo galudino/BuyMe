@@ -55,15 +55,14 @@ public class BidDBServlet extends HttpServlet {
 		String itemIDStr = request.getParameter("item_id");
 
 		String userBidStr = request.getParameter("bid");
-		String minimumBidStr = request.getParameter("auction_minBid");
-		//String startingPriceStr = request.getParameter("auction_startingPrice");
-		String bidIncrementStr = request.getParameter("auction_bidIncrement");
+		//String minimumBidStr = request.getParameter("auction_minBid");
+		//String bidIncrementStr = request.getParameter("auction_bidIncrement");
 		String winStatusStr = "0";
 
 		int bid = Integer.valueOf(userBidStr);
-		int minimumBid = Integer.valueOf(minimumBidStr);
+		//int minimumBid = Integer.valueOf(minimumBidStr);
 		//int startingPrice = Integer.valueOf(startingPriceStr);
-		int bidIncrement = Integer.valueOf(bidIncrementStr);
+		//int bidIncrement = Integer.valueOf(bidIncrementStr);
 
 		try {
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());

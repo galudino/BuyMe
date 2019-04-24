@@ -9,7 +9,7 @@
 <%--
  * auction.jsp
  *
- * Copyright (c) 2019
+ * Copyright (c) 2019 Gemuele Aludino
  * All rights reserved.
  *
  * Rutgers University: School of Arts and Sciences
@@ -36,6 +36,7 @@
 
 		String auction_id = request.getParameter("auction_id");
 		String item_id = auction_id;
+		
 		String base64Image = null;
 
 		String auctionInfo[] = null;
@@ -44,7 +45,7 @@
 		int startingPrice = 0;
 		int minBid = 0;
 		int bidIncrement = 0;
-
+		
 		try {
 			DBConnect c = new DBConnect();
 			Connection conn = c.getConnection();
@@ -52,12 +53,10 @@
 			Statement statement = conn.createStatement();
 
 			ResultSet auctionSet = statement.executeQuery("SELECT * FROM AUCTION WHERE auction_id = " + auction_id);
-
+			
 			ResultSetMetaData auctionMetaData = auctionSet.getMetaData();
-			//ResultSetMetaData itemMetaData = itemSet.getMetaData();
 
 			auctionInfo = new String[auctionMetaData.getColumnCount()];
-			//itemInfo = new String[itemMetaData.getColumnCount()];
 
 			System.out.println(auctionMetaData.getColumnCount());
 
@@ -67,7 +66,7 @@
 					auctionInfo[i] = auctionSet.getString(auctionMetaData.getColumnName(1 + i));
 				}
 			}
-
+			
 			startingPrice = auctionSet.getInt(6);
 			minBid = auctionSet.getInt(5);
 			bidIncrement = auctionSet.getInt(7);
@@ -91,15 +90,8 @@
 
 			System.out.println(base64Image);
 
-			//if(itemSet.next()) {
-
-			//	for(int i = 1; i <= itemMetaData.getColumnCount(); ++i) {
-			//		itemInfo[i] = itemSet.getString(itemMetaData.getColumnName(i));
-			//	}
-			//}
 			conn.close();
 			auctionSet.close();
-			//  itemSet.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -148,7 +140,7 @@
 		final String item_color = itemInfo[6];
 
 		final int minimumBidAccepted = minBid + bidIncrement;
-
+	
 		/**
 		 * auction_minBid and auction_startingPrice are mutable values,
 		 * while auction_bidIncrement is a fixed value.
@@ -171,11 +163,11 @@
 
 		final String dateTimeFormat = "yyyy-MM-dd HH:mm:ss.s";
 		java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern(dateTimeFormat);
-
+	
 		java.time.LocalDateTime startTime = java.time.LocalDateTime.parse(auction_startDate, formatter);
 		java.time.LocalDateTime endTime = java.time.LocalDateTime.parse(auction_endDate, formatter);
 		java.time.LocalDateTime nowTime = java.time.LocalDateTime.now();
-
+		
 		String winner = "(unspecified)";
 
 		/** 
@@ -325,11 +317,14 @@
 							if (nowTime.isBefore(startTime)) {
 						%>
 					
-					<h3 style="padding-left: 20px;">This auction is not active yet.</h3> <%
+					<h3 style="padding-left: 20px;">This auction is not active
+						yet.</h3> <%
  	if (loggedIn) {
- %><p style="padding-left: 20px;">Please come back later!</p><%
+ %><p style="padding-left: 20px;">Please come back later!</p> <%
  	} else {
- %><p style="padding-left: 20px;"><a href="signup.jsp">Sign up</a> to bid when this auction opens!</p><%
+ %><p style="padding-left: 20px;">
+						<a href="signup.jsp">Sign up</a> to bid when this auction opens!
+					</p> <%
  	}
  %>
 					<div style="Display:">
@@ -353,12 +348,14 @@
 									out.println("<p style='padding-left: 20px;'>The winner is " + winner + "!</p>");
 
 								} else {
-						%><p style="padding-left: 20px;"><a href="signup.jsp">Sign up</a> to win items like these!</p>
+						%><p style="padding-left: 20px;">
+							<a href="signup.jsp">Sign up</a> to win items like these!
+						</p>
 						<%
 							}
 							} else {
 						%>
-						<br> <br> <br> <b>Time Left:</b>
+
 						<form action="bidServlet" method="post"
 							enctype="multipart/form-data">
 							<div style="Display:">
@@ -405,7 +402,7 @@
 								<input type="hidden" name="auction_bidIncrement"
 									value=<%=auction_bidIncrement%>> <input type="hidden"
 									name="auction_startDate" value=<%=auction_startDate%>>
-								<input type="hidden" name="auction_endDate"
+								<input type="hidden" id="endDate" name="auction_endDate"
 									value=<%=auction_endDate%>>
 
 							</div>
@@ -433,18 +430,7 @@
 
 	<script>
 
-//var a = ["SELECT * FROM AUCTION(auction_id)"];
-for(auction_id){
-	var i = ["SELECT * FROM buyme.BID(username)"];//create an array of usernames in bids table with this auction id
-for(int i=0, i<array.length, i++){
-	String x = "INSERT INTO buyme.ALERTS(username + auction_id + message) VALUES(username[i] + auction_id + "A higher bid was placed on an iten you bid on!");
-	execute.statement(x);	
-}
-}
-
 </script>
-
-
 
 	<script>
 		var tday = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
@@ -487,6 +473,8 @@ for(int i=0, i<array.length, i++){
 		setInterval(GetClock, 1000);
 	</script>
 </body>
+
+
 
 <div class="footer" style="width: 60%;">
 	<hr>
