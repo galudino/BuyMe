@@ -77,7 +77,7 @@
 								name="itemName" required>
 						<p>
 							<b>Description</b>:
-							<textarea rows="15" cols="45" name="description" required></textarea>
+							<textarea rows="15" cols="45" name="description" maxlength="1000" required></textarea>
 						</p>
 
 						<p>
