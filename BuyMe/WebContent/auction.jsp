@@ -325,11 +325,11 @@
 							if (nowTime.isBefore(startTime)) {
 						%>
 					
-					<h3>This auction is not active yet.</h3> <%
+					<h3 style="padding-left: 20px;">This auction is not active yet.</h3> <%
  	if (loggedIn) {
- %>Please come back later! <%
+ %><p style="padding-left: 20px;">Please come back later!</p><%
  	} else {
- %>Sign up to bid when this auction opens! <%
+ %><p style="padding-left: 20px;"><a href="signup.jsp">Sign up</a> to bid when this auction opens!</p><%
  	}
  %>
 					<div style="Display:">
@@ -344,16 +344,16 @@
 								} else if (nowTime.isAfter(endTime)) {
 							%>
 						
-						<h3>This auction has ended.</h3>
+						<h3 style="padding-left: 20px;">This auction has ended.</h3>
 
 
 
 						<%
 							if (loggedIn) {
-									out.println("The winner is " + winner + "!");
+									out.println("<p style='padding-left: 20px;'>The winner is " + winner + "!</p>");
 
 								} else {
-						%>Sign up to win items like these!
+						%><p style="padding-left: 20px;"><a href="signup.jsp">Sign up</a> to win items like these!</p>
 						<%
 							}
 							} else {
